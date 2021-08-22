@@ -1,6 +1,7 @@
 {
   "env": {
     "browser": true,
+    "node": true,
     "commonjs": true,
     "es2021": true
   },
@@ -17,13 +18,14 @@
         "code": 120
       }
     ],
+    "no-undef": "error",
+    "indent": ["error", 2],
     "object-curly-spacing": [
       "error",
       "always",
       {
         "objectsInObjects": false
       }
-    ],
-    "semi": ["error", "never"]
+    ]
   }
 }

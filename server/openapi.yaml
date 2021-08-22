@@ -18,7 +18,34 @@ tags:
     description: Everything about game library
   - name: Game
     description: Everything about games
+  - name: test
 paths:
+  /api/test:
+    get:
+      tags:
+        - "test"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/users/me:
     get:
       tags:
@@ -49,6 +76,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
     delete:
       tags:
@@ -80,6 +108,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
     patch:
       tags:
@@ -123,6 +152,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
   /api/users/me/password:
     patch:
@@ -169,6 +199,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
   /api/auth/login:
     post:
@@ -190,9 +221,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  jwtToken:
                     type: string
-                    example: "Success"
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTIyYjI2MjBhZjU4NWIzYjc0NDI2NmQiLCJlbWFpbCI6Iml2YW5AZ21haWwuY29tIiwiaWF0IjoxNjI5NjY0MTY2fQ.zVxZwQf_v6uEhupRqBcqRMtxuHZeqNP-DvQvRnwRkOY"
         "400":
           description: "Bad request"
           content:
@@ -216,6 +247,7 @@ paths:
         content:
           application/json:
             schema:
+              required: true
               $ref: "#/components/schemas/credentials"
       responses:
         "200":
@@ -280,6 +312,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
   /api/games:
     get:
@@ -332,6 +365,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
   /api/games/{id}:
     get:
@@ -363,9 +397,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
       security:
+        - cookieAuth: []
         - bearerAuth: []
 components:
   securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
     bearerAuth:
       type: http
       scheme: bearer
@@ -398,6 +437,9 @@ components:
       example: "obi@mail.com"
     credentials:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           $ref: "#/components/schemas/email"
@@ -465,7 +507,6 @@ components:
           example: "Dark Souls"
         price:
           type: number
-          format: currency
           example: 119.95
         description:
           type: string
