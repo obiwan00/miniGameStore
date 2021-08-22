@@ -1,0 +1,13 @@
+{
+  "name": "mini-game-store",
+  "version": "0.0.0",
+  "scripts": {
+    "prestart": "npm --prefix client run build-aot",
+    "start": "npm --prefix server run start",
+    "dev": "concurrently --names \"A,N\" --prefix-colors \"red,green\" \"npm --prefix client run start\" \"npm --prefix server run dev\""
+  },
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^6.2.1"
+  }
+}

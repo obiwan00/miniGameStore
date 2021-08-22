@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - 16.5.0
+before_install:
+  - npm install -g @angular/cli
+install:
+  - npm install --prefix server
+  - npm install --prefix client
+  - npm install
+branches:
+  only:
+    - main
+script:
+  - npm --prefix client run test-headless
+deploy:
+  skip_cleanup: true
+  provider: heroku
+  app: mini-game-store
+  api_key:
+    secure: DscoEF01BoRmks+UrZE3/U6K4iYZuJrMZwnhadHk62GG6u0n1rYAawZztjOE6R7XzTeq+9tzW2HHJqEuVreazcmxg/OKHKCeQ0pM4HYliZX9N3hDcFcolO2MjOwRaSC8ITAnRwaCz4kVe4A9kW2ir0GT3GU0IT4J/YDbmPdV/Lar7QYpfoMPcNA4pIoHOcnKHVSxEsPreUB36UE4qMfZ169wNVHiuQf1ysJ3tpbUXCTrTxa78f+JMnx/DIIegIC74aUwX7XkuqivC4G9x5kqR4FiGGx2uk3xjs6d1KLwFTWpQyXIPgY2YIpNYQc+fqeQ4Kl/YAc06X/qTeILfZmvJa8zzJCL32gOsN26tuWtf+Ck9OY99A5kWCU3cc2BfyGqUQzgEH8Wg5ZB7a9XzODFA/3mcxkcUzRJTrV9mbtkBRbcVe7LHu+2gfqaQm7H0Zx7rBQnIklSeq87kF24A3DMsniJvpcMCfBvTOVEKgUpfNPupBGHnyaQ9kdh9hFdN9eAb/LGm+bNcsTyZIWiXWlEE4VzFU1YPC12j27zZIZ50a+XMSdCnDZU5IsyFAzyGO64UfKq8sxUZiCi73xWjW+sI4uXfyKQww9KO2+BbI0nZdAqMi7x42pufz8aGaSTWAVa1j3d/OcVDCjFWxvIwVUvnGkqOPsDoa9+Gmp+hcyCpOg=
+  on:
+    all_branches: true
