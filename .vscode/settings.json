@@ -18,5 +18,7 @@
   "peacock.color": "#ffdc80",
   "eslint.workingDirectories": [
     "server"
-  ]
+  ],
+  "todo-tree.tree.showBadges": true,
+  "todo-tree.tree.scanMode": "current file"
 }

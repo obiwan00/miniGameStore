@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 const { asyncErrorHandle } = require('../utils/app.util');
 const {
   registerUser,
-  createAndGetJwtToken,
+  createJwtToken,
   validateUserCredentials,
 } = require('../services/auth.service');
 
@@ -20,7 +20,7 @@ authRouter.post('/login', asyncErrorHandle(async (req, res) => {
   const { email, password } = req.body;
   const userDoc = await User.findOne({ email });
   await validateUserCredentials({ userDoc, password });
-  const jwtToken = await createAndGetJwtToken(userDoc);
+  const jwtToken = await createJwtToken(userDoc);
   res.cookie('token', jwtToken, { httpOnly: true });
   res.send({ jwtToken: jwtToken });
 }));

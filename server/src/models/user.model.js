@@ -4,18 +4,55 @@ const {
   BadRequestError,
 } = require('../utils/errors');
 
+const FriendSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['pending', 'accepted', 'rejected'],
+    default: 'pending',
+  },
+});
+
 const UserSchema = new mongoose.Schema({
-// TODO: complete userSchema
-// TODO: validate userSchema with shared joi validator
+  username: {
+    type: String,
+    default: null,
+    minlength: 2,
+    maxlength: 20,
+  },
   email: {
     type: String,
+    required: true,
     unique: true,
   },
-  password: String,
+  password: {
+    type: String,
+    required: true,
+  },
+  birthday: {
+    type: Date,
+    default: null,
+  },
+  friends: {
+    type: [FriendSchema],
+  },
+  library: {
+    type: [mongoose.Types.ObjectId],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
   },
+});
+
+UserSchema.post('findOne', function(resUserDoc) {
+  if (!resUserDoc) {
+    throw new BadRequestError('There is no such user');
+  }
 });
 
 UserSchema.post('save', function(error, doc, next) {

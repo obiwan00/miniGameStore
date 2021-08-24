@@ -1,37 +1,43 @@
 const User = require('../models/user.model');
 const { validateUserCredentials } = require('./auth.service');
-const {
-  AccessDeniedError,
-  BadRequestError,
-} = require('../utils/errors');
 const { getEncryptedString } = require('./auth.service');
 
 /**
- * Get user portfolio by email
- * @param  {string} userEmail
+ * Get user's portfolio by email
+ * @param  {string} userId
  * @return {object}
  * */
-async function getUserPortfolioByEmail(userEmail) {
-  const user = await User.findOne({ email: userEmail });
-  if (!user) {
-    throw new AccessDeniedError('There is no such user. Register to the system');
-  }
+async function getUserPortfolioById(userId) {
+  const userDoc = await User.findById(userId);
   return {
-    _id: user._id,
-    email: user.email,
-    createDate: user.createDate,
+    _id: userDoc._id,
+    email: userDoc.email,
+    username: userDoc.username,
+    birthday: userDoc.birthday,
+    createdAt: userDoc.createdAt,
   };
 }
 
+
 /**
- * Update user password
+ * Delete user's account by email
+ * @param  {string} userId
+ * */
+async function deleteUserById(userId) {
+  const userDoc = await User.findById(userId);
+  await userDoc.remove();
+}
+
+
+/**
+ * Update user's password
  * @param  {object} obj
  * @param {object} obj.userData
  * @param {string} obj.oldPassword
  * @param {string} obj.newPassword
  * */
 async function updateUserPassword({ userData, oldPassword, newPassword }) {
-  const userDoc = await User.findOne({ _id: userData._id });
+  const userDoc = await User.findById(userData._id);
   await validateUserCredentials({
     userDoc,
     password: oldPassword,
@@ -43,20 +49,24 @@ async function updateUserPassword({ userData, oldPassword, newPassword }) {
 
 
 /**
- * Delete user account by Id
- * @param  {string} userEmail
- * @return {string} newPassword
+ * Patch user's by Id
+ * @param {object} obj
+ * @param {string} obj.userId
+ * @param {object} obj.newFields
+ * @param {string=} obj.newFields.birthday
+ * @param {string=} obj.newFields.username
  * */
-async function deleteUserByEmail(userEmail) {
-  const userToDelete = await User.findOne({ email: userEmail });
-  if (!userToDelete) {
-    throw new BadRequestError('There is no such user. Login to the system');
-  }
-  await userToDelete.remove();
+async function editUserProfile({ userId, newFields }) {
+  const userDoc = await User.findById(userId);
+  Object.entries(newFields).forEach(([key, value])=> {
+    userDoc[key] = value;
+  });
+  await userDoc.save();
 }
 
 module.exports = {
-  getUserPortfolioByEmail,
+  getUserPortfolioById,
   updateUserPassword,
-  deleteUserByEmail,
+  deleteUserById,
+  editUserProfile,
 };

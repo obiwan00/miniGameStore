@@ -30,14 +30,14 @@ async function getEncryptedString(stringToEncrypt, saltRounds = 10) {
 }
 
 /**
- * Check are user credentials correct
+ * Check if user credentials are correct
  * @param {object} credentials
  * @param {object} credentials.userDoc -- await User.findOne('...')
  * @param {string} credentials.password
  * @param {string} [credentials.errorMessage]
- * @throws {undefined | AccessDeniedError} if user credentials are incorrect
+ * @throws {AccessDeniedError} if user credentials are incorrect
  * */
-async function validateUserCredentials({ userDoc, password, errorMessage = 'Incorrect username or password.' }) {
+async function validateUserCredentials({ userDoc, password, errorMessage = 'Incorrect email or password.' }) {
   if (!userDoc || !(await bcrypt.compare(password, userDoc.password))) {
     throw new AccessDeniedError(errorMessage);
   }
@@ -48,7 +48,7 @@ async function validateUserCredentials({ userDoc, password, errorMessage = 'Inco
  * @param {object} userDoc
  * @return {string}
  * */
-async function createAndGetJwtToken(userDoc) {
+async function createJwtToken(userDoc) {
   const payload = {
     _id: userDoc._id,
     email: userDoc.email,
@@ -62,5 +62,5 @@ module.exports = {
   registerUser,
   getEncryptedString,
   validateUserCredentials,
-  createAndGetJwtToken,
+  createJwtToken,
 };

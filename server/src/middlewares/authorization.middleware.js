@@ -46,13 +46,10 @@ function getJwtToken(req) {
  * */
 function getJwtTokenFromAuthHeader(req) {
   const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return;
-  }
+  if (!authHeader) return;
   const [type, token] = authHeader.split(' ');
-  if (authHeader && type === 'Bearer' || type === 'JWT') {
-    return token;
-  }
+  if (type !== 'Bearer') return;
+  return token;
 }
 
 

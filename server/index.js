@@ -37,7 +37,6 @@ app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
 });
 
-
 app.use(asyncErrorHandle(async () => {
   throw new NotFoundError();
 }));
