@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   password: String,
-  creationDate: {
+  createdAt: {
     type: Date,
     default: Date.now(),
   },

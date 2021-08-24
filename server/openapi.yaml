@@ -16,6 +16,8 @@ tags:
     description: Everything about user
   - name: Library
     description: Everything about game library
+  - name: Friends
+    description: Everything about user's friends
   - name: Game
     description: Everything about games
   - name: test
@@ -34,13 +36,13 @@ paths:
                 properties:
                   message:
                     type: string
-        "400":
-          description: "Bad request"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -51,7 +53,7 @@ paths:
       tags:
         - "User"
       summary: "Get user's user-profile info"
-      description: "User can request only his own user-profile info"
+      description: "User can request only his/her own user-profile info"
       operationId: "getProfileInfo"
       responses:
         "200":
@@ -63,13 +65,13 @@ paths:
                 properties:
                   user:
                     $ref: "#/components/schemas/User"
-        "400":
-          description: "Bad request"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -82,7 +84,7 @@ paths:
       tags:
         - User
       summary: Delete user's user-profile
-      description: User can delete only his own user-profile info
+      description: User can delete only his/her own user-profile info
       operationId: "deleteUserProfile"
       responses:
         "200":
@@ -90,18 +92,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Success"
-        "400":
-          description: "Bad request"
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -113,14 +111,15 @@ paths:
     patch:
       tags:
         - User
-      summary: Change user's user-profile
-      description: User can change only his own user-profile info
-      operationId: "changeUserProfile"
+      summary: Edit user's user-profile
+      description: User can Edit only his/her own user-profile info
+      operationId: "editUserProfile"
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              additionalProperties: false
               example:
                 { birthday: "1999-10-28T08:03:19.814Z", username: "Guts_2007" }
               properties:
@@ -134,18 +133,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Success"
-        "400":
-          description: "Bad request"
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -159,7 +154,7 @@ paths:
       tags:
         - User
       summary: Change user's password
-      description: User can change only his own user-profile password
+      description: User can change only his/her own user-profile password
       operationId: "changeUserPassword"
       requestBody:
         content:
@@ -181,18 +176,143 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Success"
-        "400":
-          description: "Bad request"
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends:
+    get:
+      tags:
+        - "Friends"
+      summary: "Get user's friends"
+      description: "User can request info about his own  friends or persons
+        who was applied friendship request by current user"
+      operationId: "getFriends"
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The number of items to return.
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  friends:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Friend"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends/{_id}:
+    post:
+      tags:
+        - "Friends"
+      summary: "Request friendship to user with {_id}"
+      description: "User can request friendship to some other user"
+      operationId: "acceptFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    patch:
+      tags:
+        - "Friends"
+      summary: "Change status of friendship  with user with {_id}"
+      description: "User can change status of friendship with other user"
+      operationId: "patchFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: "#/components/schemas/friendshipStatus"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -224,13 +344,19 @@ paths:
                   jwtToken:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTIyYjI2MjBhZjU4NWIzYjc0NDI2NmQiLCJlbWFpbCI6Iml2YW5AZ21haWwuY29tIiwiaWF0IjoxNjI5NjY0MTY2fQ.zVxZwQf_v6uEhupRqBcqRMtxuHZeqNP-DvQvRnwRkOY"
-        "400":
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
           description: "Bad request"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -255,18 +381,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Success"
-        "400":
-          description: "Bad request"
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -296,16 +418,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Game"
-        "400":
-          description: "Bad request"
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  games:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Game"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -319,7 +450,7 @@ paths:
       tags:
         - Game
       summary: "Get games"
-      description: "Get games according to queries"
+      description: "Get user's games according to queries"
       operationId: "getGamesFromLibrary"
       parameters:
         - in: query
@@ -333,7 +464,7 @@ paths:
             type: integer
           description: The number of items to return.
         - in: query
-          name: priceMax
+          name: maxPrice
           schema:
             type: integer
           description: The maximum price of games
@@ -349,16 +480,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Game"
-        "400":
-          description: "Bad request"
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  maxPrice:
+                    type: integer
+                  tags:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/tag"
+                  games:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Game"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -367,30 +513,101 @@ paths:
       security:
         - cookieAuth: []
         - bearerAuth: []
-  /api/games/{id}:
+  /api/games/{_id}:
     get:
       tags:
         - Game
-      summary: "Info about the game with {id}"
-      description: "Get information about the game with {id}"
+      summary: "Info about the game with {_id}"
+      description: "Get information about the game with {_id}"
       operationId: "getGame"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
       responses:
         "200":
           description: "Success"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  game:
-                    $ref: "#/components/schemas/Game"
-        "400":
-          description: "Bad request"
+                $ref: "#/components/schemas/Game"
+        "4XX":
+          description: "Client error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "500":
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    post:
+      tags:
+        - Game
+      summary: "Add game with {_id} to the library"
+      description: "User can add the game with {_id} to own library"
+      operationId: "addGameToLibrary"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - Game
+      summary: "Delete the game with {_id} from the library"
+      description: "User can remove the game with {_id} from own library"
+      operationId: "removeGameFromLibrary"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
           description: "Internal server error"
           content:
             application/json:
@@ -411,9 +628,8 @@ components:
       bearerFormat: JWT
   schemas:
     _id:
-      type: string
+      type: object
       format: uuid
-      minLength: 24
       example: "507f191e810c19729de860ea"
     password:
       type: string
@@ -428,6 +644,7 @@ components:
       example: "$2a$11$OjF6QvTbeaOWSIdgZG01jeBRPaQvh4R1DPjvYxxX6.27p9JXBl/4u"
     username:
       type: string
+      nullable: true
       minLength: 2
       maxLength: 20
       example: "obiwan00"
@@ -447,22 +664,43 @@ components:
           $ref: "#/components/schemas/password"
     date:
       type: string
-      format: date
+      format: date-time
       example: "2000-10-28T08:03:19.814Z"
+      description:
+        'Use JavaScript method "toISOString" of Date prototype (Data.prototype.toISOString())
+        to get date in right format'
+    nullableDate:
+      type: string
+      nullable: true
+      format: date-time
+      example: "2000-10-28T08:03:19.814Z"
+      description:
+        'Use JavaScript method "toISOString" of Date prototype (Data.prototype.toISOString())
+        to get date in right format'
     tag:
       type: string
       minLength: 2
       maxLength: 28
       example: "souls-like"
+    friendshipStatus:
+      type: string
+      enum: ["pending", "accepted", "rejected"]
+      example: "accepted"
+    gameLibrary:
+      type: array
+      items:
+        $ref: "#/components/schemas/_id"
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Success message"
     User:
       required:
         - _id
-        - username
         - email
-        - birthday
-        - friends
-        - library
-        - creationDate
+        - createdAt
       properties:
         _id:
           $ref: "#/components/schemas/_id"
@@ -471,24 +709,24 @@ components:
         email:
           $ref: "#/components/schemas/email"
         birthday:
+          $ref: "#/components/schemas/nullableDate"
+        createdAt:
           $ref: "#/components/schemas/date"
-        friends:
-          type: array
-          items:
-            type: object
-            properties:
-              friendId:
-                $ref: "#/components/schemas/_id"
-              status:
-                type: string
-                enum: ["pending", "accepted", "rejected"]
-                example: "accepted"
-        library:
-          type: array
-          items:
-            $ref: "#/components/schemas/_id"
-        creationDate:
-          $ref: "#/components/schemas/date"
+    Friend:
+      required:
+        - _id
+        - username
+        - email
+        - birthday
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        username:
+          $ref: "#/components/schemas/username"
+        email:
+          $ref: "#/components/schemas/email"
+        birthday:
+          $ref: "#/components/schemas/nullableDate"
     Game:
       required:
         - _id
@@ -497,7 +735,7 @@ components:
         - tags
         - downloadLink
         - shareLink
-        - creationDate
+        - createdAt
       properties:
         _id:
           $ref: "#/components/schemas/_id"
@@ -524,7 +762,7 @@ components:
         shareLink:
           type: string
           format: url
-        creationDate:
+        createdAt:
           $ref: "#/components/schemas/_id"
     Error:
       required:
@@ -532,3 +770,4 @@ components:
       properties:
         message:
           type: string
+          example: "Error message"
