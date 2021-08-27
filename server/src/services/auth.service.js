@@ -1,6 +1,9 @@
 const User = require('../models/user/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {
+  AccessDeniedError,
+} = require('../utils/errors');
 
 
 /**
@@ -43,9 +46,24 @@ async function createJwtToken(userDoc) {
   return jwt.sign(payload, process.env.JWT_SECRET);
 }
 
+/**
+ * Check if user credentials are correct
+ * @param {object} credentials
+ * @param {object} credentials.userDoc -- await User.findOne('...')
+ * @param {string} credentials.password
+ * @param {string} [credentials.errorMessage]
+ * @throws {AccessDeniedError} if user credentials are incorrect
+ * */
+async function validateUserCredentials({ userDoc, password, errorMessage = 'Incorrect email or password.' }) {
+  if (!userDoc || !(await bcrypt.compare(password, userDoc.password))) {
+    throw new AccessDeniedError(errorMessage);
+  }
+}
+
 
 module.exports = {
   registerUser,
   getEncryptedString,
   createJwtToken,
+  validateUserCredentials,
 };

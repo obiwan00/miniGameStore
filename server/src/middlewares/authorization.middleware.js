@@ -2,25 +2,24 @@ const expressJwt = require('express-jwt');
 const { AccessDeniedError } = require('../utils/errors');
 const { asyncErrorHandle } = require('../utils/app.util');
 const User = require('../models/user/user.model');
-const bcrypt = require('bcrypt');
+const { validateUserCredentials } = require('../services/auth.service');
 
 /**
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
+ * @param {string?} errorMessage
  * @return {Function}
  */
-async function validateCredentialsMiddleware(req, res, next) {
-  const { email, password } = req.body;
-  const userDoc = await User.findOne({ email });
-
-  if (!userDoc || !(await bcrypt.compare(password, userDoc.password))) {
-    throw new AccessDeniedError('Incorrect email or password');
-  }
-
-  req.userDoc = userDoc;
-
-  next();
+function validateCredentialsMiddleware(errorMessage = 'Incorrect email or password') {
+  return asyncErrorHandle(async (req, res, next) => {
+    const { email, password } = req.body;
+    const userDoc = await User.findOne({ email });
+    await validateUserCredentials({
+      userDoc,
+      password,
+      errorMessage,
+    });
+    req.userDoc = userDoc;
+    next();
+  });
 }
 
 /**
@@ -75,5 +74,5 @@ function getJwtTokenFromAuthHeader(req) {
 
 module.exports = {
   authorizationMiddleware: asyncErrorHandle(authorizationMiddleware),
-  validateCredentialsMiddleware: asyncErrorHandle(validateCredentialsMiddleware),
+  validateCredentialsMiddleware,
 };
