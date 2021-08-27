@@ -2,20 +2,9 @@ const mongoose = require('mongoose');
 
 const {
   BadRequestError,
-} = require('../utils/errors');
+} = require('../../utils/errors');
+const FriendSchema = require('../friend/friend.schema');
 
-const FriendSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-    enum: ['pending', 'accepted', 'rejected'],
-    default: 'pending',
-  },
-});
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -42,6 +31,7 @@ const UserSchema = new mongoose.Schema({
   },
   library: {
     type: [mongoose.Types.ObjectId],
+    ref: 'Game',
   },
   createdAt: {
     type: Date,
@@ -63,6 +53,4 @@ UserSchema.post('save', function(error, doc, next) {
   }
 });
 
-const User = mongoose.model('User', UserSchema);
-
-module.exports = User;
+module.exports = UserSchema;

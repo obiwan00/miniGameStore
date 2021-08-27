@@ -48,6 +48,65 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /api/users:
+    get:
+      tags:
+        - "User"
+      summary: "Get users"
+      operationId: "getUsers"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: String for searching friends
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  search:
+                    type: string
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UnfamiliarUser"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
   /api/users/me:
     get:
       tags:
@@ -203,14 +262,31 @@ paths:
       parameters:
         - in: query
           name: offset
+          allowEmptyValue: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set.
         - in: query
           name: limit
+          allowEmptyValue: true
           schema:
             type: integer
           description: The number of items to return.
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: String for searching friends
+        - in: query
+          name: status
+          allowEmptyValue: true
+          schema:
+            anyOf:
+              - $ref: "#/components/schemas/friendshipStatuses"
+              - type: string
+                enum: ["any"]
+          description: String for searching friends
       responses:
         "200":
           description: "Success"
@@ -225,10 +301,19 @@ paths:
                     type: integer
                   count:
                     type: integer
+                  search:
+                    type: string
+                  status:
+                    anyOf:
+                      - $ref: "#/components/schemas/friendshipStatuses"
+                      - type: string
+                        enum: ["any"]
                   friends:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Friend"
+                      anyOf:
+                        - $ref: "#/components/schemas/Friend"
+                        - $ref: "#/components/schemas/UnfamiliarUser"
         "4XX":
           description: "Client error"
           content:
@@ -245,11 +330,126 @@ paths:
         - cookieAuth: []
         - bearerAuth: []
   /api/friends/{_id}:
+    get:
+      tags:
+        - "Friends"
+      summary: "Get info of friend with {_id}"
+      description: "User can get info about his or her friend with {_id}"
+      operationId: "getFriendInfo"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  friend:
+                    allOf:
+                      - anyOf:
+                        - $ref: "#/components/schemas/Friend"
+                        - $ref: "#/components/schemas/UnfamiliarUser"
+                      - type: object
+                        required:
+                          - status
+                        properties:
+                          status:
+                            $ref: "#/components/schemas/friendshipStatuses"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
     post:
       tags:
         - "Friends"
       summary: "Request friendship to user with {_id}"
       description: "User can request friendship to some other user"
+      operationId: "requestFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - "Friends"
+      summary: "Set status of friendship of user with {_id} to 'deleted'"
+      description: "User can set status of friendship with other his or her friend"
+      operationId: "deleteFriend"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends/{_id}/accept:
+    patch:
+      tags:
+        - "Friends"
+      summary: "Accept friendship request with user with {_id}"
+      description: "User can accept appointed to him friendship requests"
       operationId: "acceptFriendship"
       parameters:
         - in: path
@@ -279,26 +479,19 @@ paths:
       security:
         - cookieAuth: []
         - bearerAuth: []
+  /api/friends/{_id}/reject:
     patch:
       tags:
         - "Friends"
-      summary: "Change status of friendship  with user with {_id}"
-      description: "User can change status of friendship with other user"
-      operationId: "patchFriendship"
+      summary: "Reject friendship request with user with {_id}"
+      description: "User can reject appointed to him friendship requests"
+      operationId: "rejectFriendship"
       parameters:
         - in: path
           name: _id
           schema:
             $ref: "#/components/schemas/_id"
           required: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  $ref: "#/components/schemas/friendshipStatus"
       responses:
         "200":
           description: "Success"
@@ -628,8 +821,9 @@ components:
       bearerFormat: JWT
   schemas:
     _id:
-      type: object
-      format: uuid
+      oneOf:
+        - type: string
+        - type: object
       example: "507f191e810c19729de860ea"
     password:
       type: string
@@ -682,14 +876,13 @@ components:
       minLength: 2
       maxLength: 28
       example: "souls-like"
-    friendshipStatus:
-      type: string
-      enum: ["pending", "accepted", "rejected"]
-      example: "accepted"
     gameLibrary:
       type: array
       items:
         $ref: "#/components/schemas/_id"
+    friendshipStatuses:
+      type: string
+      enum: [applied, pending, accepted, rejected, deleted]
     Success:
       type: object
       properties:
@@ -713,11 +906,10 @@ components:
         createdAt:
           $ref: "#/components/schemas/date"
     Friend:
+      type: object
       required:
         - _id
-        - username
         - email
-        - birthday
       properties:
         _id:
           $ref: "#/components/schemas/_id"
@@ -727,6 +919,15 @@ components:
           $ref: "#/components/schemas/email"
         birthday:
           $ref: "#/components/schemas/nullableDate"
+    UnfamiliarUser:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        username:
+          $ref: "#/components/schemas/username"
     Game:
       required:
         - _id

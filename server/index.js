@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 
 const { authRouter } = require('./src/controllers/auth.controller');
 const { usersRouter } = require('./src/controllers/users.controller');
+const { friendsRouter } = require('./src/controllers/friends.controller');
 const { asyncErrorHandle } = require('./src/utils/app.util');
 const { NotFoundError } = require('./src/utils/errors');
 const { authorizationMiddleware } = require('./src/middlewares/authorization.middleware');
@@ -33,6 +34,7 @@ app.use(
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', authorizationMiddleware, usersRouter);
+app.use('/api/friends', authorizationMiddleware, friendsRouter);
 app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
 });
@@ -66,6 +68,7 @@ async function connectToBD() {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   });
   console.log('DB connected');
 }

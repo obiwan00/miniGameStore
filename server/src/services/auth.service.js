@@ -1,8 +1,7 @@
-const User = require('../models/user.model');
+const User = require('../models/user/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const { AccessDeniedError } = require('../utils/errors');
 
 /**
  * Register new user
@@ -48,6 +47,5 @@ async function createJwtToken(userDoc) {
 module.exports = {
   registerUser,
   getEncryptedString,
-  validateUserCredentials,
   createJwtToken,
 };

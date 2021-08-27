@@ -7,8 +7,27 @@ const {
   getUserPortfolioById,
   updateUserPassword,
   editUserProfile,
+  getUsers,
 } = require('../services/users.service');
 
+usersRouter.get('/', asyncErrorHandle(async (req, res) => {
+  const { offset = '0', limit = '0', search = '' } = req.query;
+
+  const usersByQueryParams = await getUsers({
+    userId: req.user._id,
+    offset: +offset,
+    limit: +limit,
+    search: search,
+  });
+
+  res.json({
+    offset: +offset,
+    limit: +limit,
+    search: search,
+    users: usersByQueryParams.users,
+    count: usersByQueryParams.count,
+  });
+}));
 
 usersRouter.get('/me', asyncErrorHandle(async (req, res) => {
   res.send({ user: await getUserPortfolioById(req.user._id) });
