@@ -19,6 +19,19 @@
   "eslint.workingDirectories": [
     "server"
   ],
-  "todo-tree.tree.showBadges": true,
-  "todo-tree.tree.scanMode": "current file"
+  "todo-tree.tree.showBadges": false,
+  "todo-tree.tree.scanMode": "workspace only",
+  "cSpell.ignoreWords": [
+    "doesnt",
+    "error",
+    "friend",
+    "have",
+    "if",
+    "such",
+    "throw",
+    "user"
+  ],
+  "cSpell.words": [
+    "middlewares"
+  ]
 }
