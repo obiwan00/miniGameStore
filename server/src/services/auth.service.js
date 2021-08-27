@@ -29,19 +29,6 @@ async function getEncryptedString(stringToEncrypt, saltRounds = 10) {
   return await bcrypt.hash(stringToEncrypt, saltRounds);
 }
 
-/**
- * Check if user credentials are correct
- * @param {object} credentials
- * @param {object} credentials.userDoc -- await User.findOne('...')
- * @param {string} credentials.password
- * @param {string} [credentials.errorMessage]
- * @throws {AccessDeniedError} if user credentials are incorrect
- * */
-async function validateUserCredentials({ userDoc, password, errorMessage = 'Incorrect email or password.' }) {
-  if (!userDoc || !(await bcrypt.compare(password, userDoc.password))) {
-    throw new AccessDeniedError(errorMessage);
-  }
-}
 
 /**
  * Create and get Jwt token
