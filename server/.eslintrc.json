@@ -20,6 +20,7 @@
     ],
     "no-undef": "error",
     "indent": ["error", 2],
+    "arraysInObjects": false,
     "object-curly-spacing": [
       "error",
       "always",

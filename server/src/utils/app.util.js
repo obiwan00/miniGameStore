@@ -26,15 +26,45 @@ function pickFieldsFromObject({ sourceObject, fieldsToPick }) {
 
 /**
  * Exclude value from array
- * @param {string | number} value
+ * @param {string | number | boolean} value
  * @param {any[]} array
+ * @param {object} errorHandling
+ * @param {boolean} errorHandling.shouldThrowError
+ * @param {string} errorHandling.errorMessage
+ * @param {Object} errorHandling.ErrorObj
  * @return {any[]}
  * */
-function excludeValueFromArray(value, array) {
+function excludeValueFromArray(value, array, {
+  shouldThrowError = true,
+  ErrorObj = Error,
+  errorMessage = `Array [${array}] not includes such a value (${value})`
+}) {
   const arrayCopy = [...array];
   const indexOfValue = arrayCopy.indexOf(value);
-  arrayCopy.splice(indexOfValue, 1);
-  return arrayCopy;
+
+  if (indexOfValue !== -1) {
+    return arrayCopy.splice(indexOfValue, 1);
+  } else if (shouldThrowError) {
+    throw new ErrorObj(errorMessage)
+  }
+
+  return arrayCopy
+}
+
+/**
+ * Slice elements of array
+ * @param {object} obj
+ * @param {any[]} obj.array
+ * @param {number} obj.limit
+ * @param {number} obj.offset
+ * @return {any[]}
+ * */
+function sliceElementsOfArray({ array = [], limit, offset }) {
+  const sliceStart = offset;
+  const sliceEnd = limit + offset;
+  return sliceEnd ?
+    array.slice(sliceStart, sliceEnd) :
+    array.slice(sliceStart);
 }
 
 
@@ -42,4 +72,5 @@ module.exports = {
   asyncErrorHandle,
   pickFieldsFromObject,
   excludeValueFromArray,
+  sliceElementsOfArray,
 };

@@ -11,10 +11,12 @@ const cookieParser = require('cookie-parser');
 
 const { authRouter } = require('./src/controllers/auth.controller');
 const { usersRouter } = require('./src/controllers/users.controller');
+const { gamesRouter } = require('./src/controllers/games.controller');
 const { friendsRouter } = require('./src/controllers/friends.controller');
 const { asyncErrorHandle } = require('./src/utils/app.util');
 const { NotFoundError } = require('./src/utils/errors');
 const { authorizationMiddleware } = require('./src/middlewares/authorization.middleware');
+const { libraryRouter } = require('./src/controllers/library.controller');
 
 
 app.use(morgan('tiny'));
@@ -35,6 +37,8 @@ app.use(
 app.use('/api/auth', authRouter);
 app.use('/api/users', authorizationMiddleware, usersRouter);
 app.use('/api/friends', authorizationMiddleware, friendsRouter);
+app.use('/api/games', authorizationMiddleware, gamesRouter);
+app.use('/api/library', authorizationMiddleware, libraryRouter);
 app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
 });

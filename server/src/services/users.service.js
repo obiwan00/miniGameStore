@@ -98,7 +98,7 @@ function filterUsers(users, { search, status }) {
 /**
  * Get users according to query params
  * @param {object} query
- * @param {StaticRangeInit} query.userId
+ * @param {string} query.userId
  * @param {number} query.limit
  * @param {number} query.offset
  * @param {string} query.search
@@ -120,7 +120,7 @@ async function getUsers({ userId, limit, offset, search }) {
 
   return {
     users: formattedUsers,
-    count: 0,
+    count: await User.count(searchQuery),
   };
 }
 

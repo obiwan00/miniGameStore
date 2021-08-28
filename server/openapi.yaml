@@ -14,12 +14,12 @@ tags:
     description: User authorization
   - name: User
     description: Everything about user
-  - name: Library
-    description: Everything about game library
   - name: Friends
     description: Everything about user's friends
   - name: Game
     description: Everything about games
+  - name: Library
+    description: Everything about game library
   - name: test
 paths:
   /api/test:
@@ -73,7 +73,7 @@ paths:
           allowEmptyValue: true
           schema:
             type: string
-          description: String for searching friends
+          description: The search query by username
       responses:
         "200":
           description: "Success"
@@ -277,7 +277,7 @@ paths:
           allowEmptyValue: true
           schema:
             type: string
-          description: String for searching friends
+          description: The search query by username
         - in: query
           name: status
           allowEmptyValue: true
@@ -353,8 +353,8 @@ paths:
                   friend:
                     allOf:
                       - anyOf:
-                        - $ref: "#/components/schemas/Friend"
-                        - $ref: "#/components/schemas/UnfamiliarUser"
+                          - $ref: "#/components/schemas/Friend"
+                          - $ref: "#/components/schemas/UnfamiliarUser"
                       - type: object
                         required:
                           - status
@@ -587,57 +587,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /api/library:
-    get:
-      tags:
-        - Library
-      summary: "Library games"
-      description: "Get games from user's library"
-      operationId: "getGamesFromLibrary"
-      parameters:
-        - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set.
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The number of items to return.
-      responses:
-        "200":
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                  limit:
-                    type: integer
-                  count:
-                    type: integer
-                  games:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Game"
-        "4XX":
-          description: "Client error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "5XX":
-          description: "Internal server error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-      security:
-        - cookieAuth: []
-        - bearerAuth: []
   /api/games:
     get:
       tags:
@@ -648,21 +597,31 @@ paths:
       parameters:
         - in: query
           name: offset
+          allowEmptyValue: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set.
         - in: query
           name: limit
+          allowEmptyValue: true
           schema:
             type: integer
           description: The number of items to return.
         - in: query
           name: maxPrice
+          allowEmptyValue: true
           schema:
             type: integer
           description: The maximum price of games
         - in: query
-          name: tags[]
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by name and description
+        - in: query
+          name: tags
+          allowEmptyValue: true
           schema:
             type: array
             items:
@@ -725,7 +684,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Game"
+                type: object
+                properties:
+                  game:
+                    anyOf:
+                    - $ref: "#/components/schemas/Game"
+                    - $ref: "#/components/schemas/PayedGame"
         "4XX":
           description: "Client error"
           content:
@@ -741,9 +705,82 @@ paths:
       security:
         - cookieAuth: []
         - bearerAuth: []
+  /api/library:
+    get:
+      tags:
+        - Library
+      summary: "Library games"
+      description: "Get games from user's library"
+      operationId: "getGamesFromLibrary"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: maxPrice
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The maximum price of games
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by name and description
+        - in: query
+          name: tags
+          allowEmptyValue: true
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/tag"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  games:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PayedGame"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/library/{_id}:
     post:
       tags:
-        - Game
+        - Library
       summary: "Add game with {_id} to the library"
       description: "User can add the game with {_id} to own library"
       operationId: "addGameToLibrary"
@@ -777,7 +814,7 @@ paths:
         - bearerAuth: []
     delete:
       tags:
-        - Game
+        - Library
       summary: "Delete the game with {_id} from the library"
       description: "User can remove the game with {_id} from own library"
       operationId: "removeGameFromLibrary"
@@ -934,9 +971,6 @@ components:
         - name
         - price
         - tags
-        - downloadLink
-        - shareLink
-        - createdAt
       properties:
         _id:
           $ref: "#/components/schemas/_id"
@@ -956,15 +990,21 @@ components:
           type: array
           example: ["souls-like", "dark fantasy", "RPG"]
           items:
-            $ref: "#/components/schemas/tag"
-        downloadLink:
-          type: string
-          format: url
+            type: object
+            properties:
+              name:
+                $ref: "#/components/schemas/tag"
         shareLink:
           type: string
           format: url
-        createdAt:
-          $ref: "#/components/schemas/_id"
+    PayedGame:
+      allOf:
+        - $ref: "#/components/schemas/Game"
+        - type: object
+          properties:
+            downloadLink:
+              type: string
+              format: url
     Error:
       required:
         - message

@@ -2,6 +2,7 @@ const Friend = require('../models/friend/friend.model');
 const User = require('../models/user/user.model');
 const {
   pickFieldsFromObject,
+  sliceElementsOfArray,
 } = require('../utils/app.util');
 const {
   filterUsers,
@@ -88,7 +89,11 @@ async function getFriends({ userId, limit, offset, status, search }) {
     },
   });
 
-  const paginationFilteredFriends = filteredFriends.slice(offset, offset + limit);
+  const paginationFilteredFriends = sliceElementsOfArray({
+    array: filteredFriends,
+    offset,
+    limit,
+  });
 
   return {
     friends: paginationFilteredFriends,
