@@ -47,7 +47,6 @@ async function getTagsIdByStringArray(tagNames) {
   return await tagNames.reduce(async (acc, tagName) => {
     const tagId = await getTagIdByString(tagName);
     const newAcc = await acc;
-    console.log({ newAcc, tagName });
     newAcc.push(tagId);
     return newAcc;
   }, Promise.resolve([]));
@@ -84,7 +83,7 @@ async function getTagIdByString(tagName) {
  * */
 async function getGames({ userId, limit, offset, search, tags, maxPrice }) {
   const searchQuery = await applyParamsForGameFilter({ search, tags, maxPrice });
-  console.log(searchQuery)
+
   const games = await Game.find(searchQuery)
     .populate('tags', 'name')
     .limit(limit)
@@ -113,8 +112,6 @@ async function getGames({ userId, limit, offset, search, tags, maxPrice }) {
       }
     },
   ]);
-
-  console.log({ gamesMetaData })
 
   return {
     games: formattedGames,

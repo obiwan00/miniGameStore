@@ -566,8 +566,15 @@ paths:
         content:
           application/json:
             schema:
-              required: true
-              $ref: "#/components/schemas/credentials"
+              allOf:
+                - required: true
+                  $ref: "#/components/schemas/credentials"
+                - type: object
+                  required:
+                    - username
+                  properties:
+                    username:
+                      $ref: "#/components/schemas/username"
       responses:
         "200":
           description: "Success"
@@ -688,8 +695,8 @@ paths:
                 properties:
                   game:
                     anyOf:
-                    - $ref: "#/components/schemas/Game"
-                    - $ref: "#/components/schemas/PayedGame"
+                      - $ref: "#/components/schemas/Game"
+                      - $ref: "#/components/schemas/PayedGame"
         "4XX":
           description: "Client error"
           content:
@@ -929,6 +936,7 @@ components:
     User:
       required:
         - _id
+        - username
         - email
         - createdAt
       properties:
@@ -946,6 +954,7 @@ components:
       type: object
       required:
         - _id
+        - username
         - email
       properties:
         _id:
@@ -960,6 +969,7 @@ components:
       type: object
       required:
         - _id
+        - username
       properties:
         _id:
           $ref: "#/components/schemas/_id"

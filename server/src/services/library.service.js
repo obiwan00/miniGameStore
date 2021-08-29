@@ -47,7 +47,6 @@ async function getGamesFromLibrary({ userId, limit, offset, search, tags, maxPri
 
   const availableTags = filteredGames.reduce((acc, game) => {
     game.tags.forEach(tag => {
-      console.log({ acc })
       acc.add(tag.name)
     })
     return acc;

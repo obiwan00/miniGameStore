@@ -12,8 +12,8 @@ const {
 
 
 authRouter.post('/register', asyncErrorHandle(async (req, res) => {
-  const { email, password } = req.body;
-  await registerUser({ email, password });
+  const { email, password, username } = req.body;
+  await registerUser({ email, password, username });
   res.send({ message: 'Profile created successfully' });
 }));
 

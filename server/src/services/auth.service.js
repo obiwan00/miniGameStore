@@ -12,9 +12,11 @@ const {
  * @param {string} obj.role
  * @param {string} obj.email
  * @param {string} obj.password
+ * @param {string} obj.username
  * */
-async function registerUser({ email, password }) {
+async function registerUser({ email, password, username }) {
   const newUser = new User({
+    username,
     email,
     password: await getEncryptedString(password),
   });
