@@ -1,0 +1,1024 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8080
+    description: local test server
+info:
+  description: This is a simple API for miniGameStore
+  version: "1.0.0"
+  title: miniGameStore
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: ivan.maidaniuk@gmail.com
+tags:
+  - name: Auth
+    description: User authorization
+  - name: User
+    description: Everything about user
+  - name: Friends
+    description: Everything about user's friends
+  - name: Game
+    description: Everything about games
+  - name: Library
+    description: Everything about game library
+  - name: test
+paths:
+  /api/test:
+    get:
+      tags:
+        - "test"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/users:
+    get:
+      tags:
+        - "User"
+      summary: "Get users"
+      operationId: "getUsers"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by username
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  search:
+                    type: string
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UnfamiliarUser"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/users/me:
+    get:
+      tags:
+        - "User"
+      summary: "Get user's user-profile info"
+      description: "User can request only his/her own user-profile info"
+      operationId: "getProfileInfo"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - User
+      summary: Delete user's user-profile
+      description: User can delete only his/her own user-profile info
+      operationId: "deleteUserProfile"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    patch:
+      tags:
+        - User
+      summary: Edit user's user-profile
+      description: User can Edit only his/her own user-profile info
+      operationId: "editUserProfile"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              example:
+                { birthday: "1999-10-28T08:03:19.814Z", username: "Guts_2007" }
+              properties:
+                username:
+                  $ref: "#/components/schemas/username"
+                birthday:
+                  $ref: "#/components/schemas/date"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/users/me/password:
+    patch:
+      tags:
+        - User
+      summary: Change user's password
+      description: User can change only his/her own user-profile password
+      operationId: "changeUserPassword"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: { oldPassword: "123456", newPassword: "qwerty" }
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  $ref: "#/components/schemas/password"
+                newPassword:
+                  $ref: "#/components/schemas/password"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends:
+    get:
+      tags:
+        - "Friends"
+      summary: "Get user's friends"
+      description: "User can request info about his own  friends or persons
+        who was applied friendship request by current user"
+      operationId: "getFriends"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by username
+        - in: query
+          name: status
+          allowEmptyValue: true
+          schema:
+            anyOf:
+              - $ref: "#/components/schemas/friendshipStatuses"
+              - type: string
+                enum: ["any"]
+          description: String for searching friends
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  search:
+                    type: string
+                  status:
+                    anyOf:
+                      - $ref: "#/components/schemas/friendshipStatuses"
+                      - type: string
+                        enum: ["any"]
+                  friends:
+                    type: array
+                    items:
+                      anyOf:
+                        - $ref: "#/components/schemas/Friend"
+                        - $ref: "#/components/schemas/UnfamiliarUser"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends/{_id}:
+    get:
+      tags:
+        - "Friends"
+      summary: "Get info of friend with {_id}"
+      description: "User can get info about his or her friend with {_id}"
+      operationId: "getFriendInfo"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  friend:
+                    allOf:
+                      - anyOf:
+                          - $ref: "#/components/schemas/Friend"
+                          - $ref: "#/components/schemas/UnfamiliarUser"
+                      - type: object
+                        required:
+                          - status
+                        properties:
+                          status:
+                            $ref: "#/components/schemas/friendshipStatuses"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    post:
+      tags:
+        - "Friends"
+      summary: "Request friendship to user with {_id}"
+      description: "User can request friendship to some other user"
+      operationId: "requestFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - "Friends"
+      summary: "Set status of friendship of user with {_id} to 'deleted'"
+      description: "User can set status of friendship with other his or her friend"
+      operationId: "deleteFriend"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends/{_id}/accept:
+    patch:
+      tags:
+        - "Friends"
+      summary: "Accept friendship request with user with {_id}"
+      description: "User can accept appointed to him friendship requests"
+      operationId: "acceptFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/friends/{_id}/reject:
+    patch:
+      tags:
+        - "Friends"
+      summary: "Reject friendship request with user with {_id}"
+      description: "User can reject appointed to him friendship requests"
+      operationId: "rejectFriendship"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/auth/login:
+    post:
+      tags:
+        - "Auth"
+      summary: "Login"
+      description: "Login user into the system"
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/credentials"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwtToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTIyYjI2MjBhZjU4NWIzYjc0NDI2NmQiLCJlbWFpbCI6Iml2YW5AZ21haWwuY29tIiwiaWF0IjoxNjI5NjY0MTY2fQ.zVxZwQf_v6uEhupRqBcqRMtxuHZeqNP-DvQvRnwRkOY"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/auth/register:
+    post:
+      tags:
+        - "Auth"
+      summary: "Register a new user"
+      description: "Create new user-profile"
+      operationId: "createProfile"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - required: true
+                  $ref: "#/components/schemas/credentials"
+                - type: object
+                  required:
+                    - username
+                  properties:
+                    username:
+                      $ref: "#/components/schemas/username"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/games:
+    get:
+      tags:
+        - Game
+      summary: "Get games"
+      description: "Get user's games according to queries"
+      operationId: "getGamesFromLibrary"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: maxPrice
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The maximum price of games
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by name and description
+        - in: query
+          name: tags
+          allowEmptyValue: true
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/tag"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  maxPrice:
+                    type: integer
+                  tags:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/tag"
+                  games:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Game"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/games/{_id}:
+    get:
+      tags:
+        - Game
+      summary: "Info about the game with {_id}"
+      description: "Get information about the game with {_id}"
+      operationId: "getGame"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game:
+                    anyOf:
+                      - $ref: "#/components/schemas/Game"
+                      - $ref: "#/components/schemas/PayedGame"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/library:
+    get:
+      tags:
+        - Library
+      summary: "Library games"
+      description: "Get games from user's library"
+      operationId: "getGamesFromLibrary"
+      parameters:
+        - in: query
+          name: offset
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The number of items to return.
+        - in: query
+          name: maxPrice
+          allowEmptyValue: true
+          schema:
+            type: integer
+          description: The maximum price of games
+        - in: query
+          name: search
+          allowEmptyValue: true
+          schema:
+            type: string
+          description: The search query by name and description
+        - in: query
+          name: tags
+          allowEmptyValue: true
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/tag"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                  limit:
+                    type: integer
+                  count:
+                    type: integer
+                  games:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PayedGame"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+  /api/library/{_id}:
+    post:
+      tags:
+        - Library
+      summary: "Add game with {_id} to the library"
+      description: "User can add the game with {_id} to own library"
+      operationId: "addGameToLibrary"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+    delete:
+      tags:
+        - Library
+      summary: "Delete the game with {_id} from the library"
+      description: "User can remove the game with {_id} from own library"
+      operationId: "removeGameFromLibrary"
+      parameters:
+        - in: path
+          name: _id
+          schema:
+            $ref: "#/components/schemas/_id"
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "4XX":
+          description: "Client error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    _id:
+      oneOf:
+        - type: string
+        - type: object
+      example: "507f191e810c19729de860ea"
+    password:
+      type: string
+      format: password
+      minLength: 6
+      maxLength: 20
+      example: "qwerty"
+    encryptedPassword:
+      type: string
+      format: password
+      minLength: 60
+      example: "$2a$11$OjF6QvTbeaOWSIdgZG01jeBRPaQvh4R1DPjvYxxX6.27p9JXBl/4u"
+    username:
+      type: string
+      nullable: true
+      minLength: 2
+      maxLength: 20
+      example: "obiwan00"
+    email:
+      type: string
+      format: email
+      example: "obi@mail.com"
+    credentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          $ref: "#/components/schemas/email"
+        password:
+          $ref: "#/components/schemas/password"
+    date:
+      type: string
+      format: date-time
+      example: "2000-10-28T08:03:19.814Z"
+      description:
+        'Use JavaScript method "toISOString" of Date prototype (Data.prototype.toISOString())
+        to get date in right format'
+    nullableDate:
+      type: string
+      nullable: true
+      format: date-time
+      example: "2000-10-28T08:03:19.814Z"
+      description:
+        'Use JavaScript method "toISOString" of Date prototype (Data.prototype.toISOString())
+        to get date in right format'
+    tag:
+      type: string
+      minLength: 2
+      maxLength: 28
+      example: "souls-like"
+    gameLibrary:
+      type: array
+      items:
+        $ref: "#/components/schemas/_id"
+    friendshipStatuses:
+      type: string
+      enum: [applied, pending, accepted, rejected, deleted]
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Success message"
+    User:
+      required:
+        - _id
+        - username
+        - email
+        - createdAt
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        username:
+          $ref: "#/components/schemas/username"
+        email:
+          $ref: "#/components/schemas/email"
+        birthday:
+          $ref: "#/components/schemas/nullableDate"
+        createdAt:
+          $ref: "#/components/schemas/date"
+    Friend:
+      type: object
+      required:
+        - _id
+        - username
+        - email
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        username:
+          $ref: "#/components/schemas/username"
+        email:
+          $ref: "#/components/schemas/email"
+        birthday:
+          $ref: "#/components/schemas/nullableDate"
+    UnfamiliarUser:
+      type: object
+      required:
+        - _id
+        - username
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        username:
+          $ref: "#/components/schemas/username"
+    Game:
+      required:
+        - _id
+        - name
+        - price
+        - tags
+      properties:
+        _id:
+          $ref: "#/components/schemas/_id"
+        name:
+          type: string
+          minLength: 2
+          example: "Dark Souls"
+        price:
+          type: number
+          example: 119.95
+        description:
+          type: string
+          example: "Dark Souls is a 2011 action role-playing game developed by FromSoftware and published by Namco Bandai Games. A spiritual successor to FromSoftware's Demon's ..."
+          minLength: 20
+          maxLength: 400
+        tags:
+          type: array
+          example: ["souls-like", "dark fantasy", "RPG"]
+          items:
+            type: object
+            properties:
+              name:
+                $ref: "#/components/schemas/tag"
+        shareLink:
+          type: string
+          format: url
+    PayedGame:
+      allOf:
+        - $ref: "#/components/schemas/Game"
+        - type: object
+          properties:
+            downloadLink:
+              type: string
+              format: url
+    Error:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "Error message"
