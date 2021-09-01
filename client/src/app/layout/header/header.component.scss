@@ -1,0 +1,43 @@
+@use "abstracts/variables" as *;
+@use "base/typography";
+
+.header {
+  padding: 20px 0;
+  background-color: $primaryColor;
+  border-bottom: 2px solid $black;
+
+  // .header__logo
+
+  &__logo {
+    @extend .h3;
+  }
+
+  // .header__container
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // .header__nav
+
+  &__nav {
+    margin: 0 40px;
+
+    ul {
+      display: flex;
+    }
+
+    li {
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  // .header__auth
+
+  &__auth {
+  }
+}

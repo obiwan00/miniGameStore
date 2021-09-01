@@ -1,0 +1,41 @@
+@use "functions" as *;
+
+// Container Parameters
+$containerPadding: 40px;
+$containerPaddingS: 20px;
+$designContainer: 1200;
+$containerMaxWidth: $designContainer + stripUnit($containerPadding) * 2;
+
+// Adaptive Property Sizing
+$adaptivePropertyMaxViewport: $containerMaxWidth;
+$adaptivePropertyMinViewport: 375;
+
+// Breakpoints sizing
+$desktop: 1440px;
+$desktopP1: $desktop + 1px;
+$tablet: 1024px; // @media (max-width: $tablet) --> 1024px and smaller
+$tabletP1: $tablet + 1px; // @media (min-width: $tabletP1) --> 1025px and bigger
+$tabletSmall: 767px;
+$tabletSmallP1: $tabletSmall + 1px;
+$mobile: 575px;
+$mobileP1: $mobile + 1px;
+
+// Colors
+$brightRose: #c30049;
+$nasturtiumFlower: #e23517;
+$moonLight: #f4eccc;
+
+$white: #ffffff;
+$black: #020301;
+$grey: #8d8d8d;
+$yellow: #ffbf00;
+$primaryColor: $moonLight;
+$secondaryColor: $nasturtiumFlower;
+$errorColor: $nasturtiumFlower;
+
+// Theme colors
+$backgroundColor: hsl(54, 67%, 97%);
+$loaderColor: $yellow;
+
+// Font family
+$primaryFont: "Noto Sans JP", sans-serif;

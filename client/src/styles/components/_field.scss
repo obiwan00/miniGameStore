@@ -1,0 +1,42 @@
+@use "abstracts/variables";
+
+.field {
+  cursor: pointer;
+
+  textarea,
+  input {
+    border-radius: 4px;
+    display: block;
+    width: 100%;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    font-size: 20px;
+  }
+
+  // .filed--error {
+
+  &--error {
+    color: $errorColor;
+    input,
+    textarea {
+      border-color: $errorColor;
+    }
+  }
+
+  // .field__title
+
+  &__title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  // .field__error
+
+  &__error {
+    display: block;
+    margin-top: 8px;
+    font-size: 16px;
+  }
+}

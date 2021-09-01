@@ -1,0 +1,36 @@
+<header *ngIf="isAuthenticated | async" class="header">
+  <div class="header__container container">
+    <a class="header__logo" [routerLink]="['/']">
+      miniGameStore
+    </a>
+    <nav class="header__nav">
+      <ul>
+        <li>
+          <a [routerLink]="['/users']" routerLinkActive="router-link-active">
+            Users
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/users/friends']" routerLinkActive="router-link-active">
+            Friends
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/games']" routerLinkActive="router-link-active">
+            Games
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/games/library']" routerLinkActive="router-link-active">
+            Library
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="header__auth">
+      <a [routerLink]="" (click)="logout()" class="btn">
+        Sing out
+      </a>
+    </div>
+  </div>
+</header>

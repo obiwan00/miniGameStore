@@ -1,0 +1,40 @@
+@use "abstracts/functions" as f;
+@use "abstracts/variables" as v;
+
+@mixin adaptiveProperty($propertyName, $deskSize, $mobSize) {
+  $addSize: $deskSize - $mobSize;
+  $addMobSize: $addSize + $addSize * 0.7;
+  @media (max-width: f.numToPx(v.$adaptivePropertyMinViewport)) {
+    #{$propertyName}: f.numToPx($mobSize);
+  }
+  @media (min-width: f.numToPx(v.$adaptivePropertyMinViewport + 1)) and (max-width: f.numToPx(v.$containerMaxWidth)) {
+    #{$propertyName}: calc(
+      #{f.numToPx($mobSize)} + #{$addSize} *
+        (
+          (100vw - #{f.numToPx(v.$adaptivePropertyMinViewport)}) /
+            (#{v.$adaptivePropertyMaxViewport} - #{v.$adaptivePropertyMinViewport})
+        )
+    );
+  }
+  @media (min-width: f.numToPx(v.$adaptivePropertyMaxViewport + 1)) {
+    #{$propertyName}: f.numToPx($deskSize);
+  }
+}
+
+@mixin aspect-ratio-img($aspectRatio: 52.6%, $imgPosition: 50% 50%) {
+  --aspect-ratio: #{$aspectRatio};
+  --img-position: #{$imgPosition};
+  position: relative;
+  height: 0;
+  padding-bottom: var(--aspect-ratio);
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: var(--img-position);
+  }
+}
