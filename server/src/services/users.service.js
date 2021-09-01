@@ -45,8 +45,8 @@ async function deleteUserById(userId) {
 async function updateUserPassword({ userData, oldPassword, newPassword }) {
   const userDoc = await User.findById(userData._id);
   await validateUserCredentials({
-    userDoc,
-    password: oldPassword,
+    userPassword: userDoc.password,
+    passwordToCheck: oldPassword,
     errorMessage: 'Passed old password is incorrect',
   });
   userDoc.password = await getEncryptedString(newPassword);

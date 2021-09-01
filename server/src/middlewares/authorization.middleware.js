@@ -11,10 +11,15 @@ const { validateUserCredentials } = require('../services/auth.service');
 function validateCredentialsMiddleware(errorMessage = 'Incorrect email or password') {
   return asyncErrorHandle(async (req, res, next) => {
     const { email, password } = req.body;
-    const userDoc = await User.findOne({ email });
+    let userDoc
+    try {
+      userDoc = await User.findOne({ email });
+    } catch (e) {
+      next(new AccessDeniedError(errorMessage))
+    }
     await validateUserCredentials({
-      userDoc,
-      password,
+      userPassword: userDoc.password,
+      passwordToCheck: password,
       errorMessage,
     });
     req.userDoc = userDoc;

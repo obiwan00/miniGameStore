@@ -5,6 +5,7 @@ const {
   friendBaseValidationMiddleware,
   ifUserHasSuchFriendThrowErrorMiddleware,
   ifUserHasNOTSuchFriendThrowErrorMiddleware,
+  ifSuchFriendNOTExistThrowErrorMiddleware,
 } = require('../middlewares/friend.middleware');
 
 const {
@@ -53,6 +54,7 @@ friendsRouter.post(
   '/:_id',
   [
     friendBaseValidationMiddleware,
+    ifSuchFriendNOTExistThrowErrorMiddleware,
     ifUserHasSuchFriendThrowErrorMiddleware(),
   ],
   asyncErrorHandle(async (req, res) => {
