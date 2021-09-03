@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './pages/users/users.component';
 import { FriendsComponent } from './pages/friends/friends.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { FriendsComponent } from './pages/friends/friends.component';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     UsersRoutingModule
   ]
 })

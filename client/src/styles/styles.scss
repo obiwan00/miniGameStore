@@ -5,6 +5,8 @@
 @import "base/reset";
 @import "base/typography";
 
+@import '~ngx-toastr/toastr';
+
 @import "components/border";
 @import "components/btn";
 @import "components/field";

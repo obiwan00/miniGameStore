@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { HeaderComponent } from './layout/header/header.component';
 import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     SharedModule,
     AuthModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
   ],
   providers: [

@@ -1,1 +1,23 @@
-<p>games works!</p>
+<section class="container">
+  <header class="top-bar">
+    <app-search-bar (formEmitter)="this.searchValue = $event; searchGames()"
+      [searchDescriptionMessage]="'Search by game name'"></app-search-bar>
+  </header>
+
+  <main class="main">
+    <app-loader *ngIf="isLoaderActive"></app-loader>
+    <div class="main__inner" *ngIf="!isLoaderActive">
+      <app-game-card class="main__item" *ngFor="let game of (gamesRes$ | async)?.games" [game]='game'
+        (cardEmitter)="searchGames()"></app-game-card>
+      <div *ngIf="!(gamesRes$ | async)?.games?.length">There are not any results 😅</div>
+    </div>
+  </main>
+
+  <div class="side-bar">
+    <app-range-slider [disabled]="isLoaderActive" [maxValue]="maxPriceInput" [currentInputValue]="currentSearchPrice"
+      (formEmitter)="currentSearchPrice = $event; searchGames()"></app-range-slider>
+    <app-checkbox-group [disabled]="isLoaderActive" [checkboxesDataInput]="tagsInput"
+      (formEmitter)="selectedTags = $event; searchGames()">
+    </app-checkbox-group>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+<form [formGroup]="formGroup" (change)="onChange()">
+  <input type="range" formControlName="range" [min]="minValue" [max]="maxValue">
+  <span>
+    {{
+    this.currentValue === this.maxValue ?
+    'Any price' :
+    this.currentValue === this.minValue ?
+    'Free to play' :
+    'Under ' + ((this.currentValue || 0) | currency)
+    }}
+  </span>
+</form>

@@ -1,0 +1,7 @@
+<form [formGroup]="searchFrom" (ngSubmit)="onSubmit()">
+  <input type="text" class="input" formControlName="search">
+  <button type="submit" class="btn btn--primary">Search</button>
+</form>
+<div class="search-description" *ngIf="sentMessage && searchDescriptionMessage">
+  {{searchDescriptionMessage}}: '{{sentMessage}}'
+</div>

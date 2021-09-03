@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Credentials } from '../core/modules/credentials';
-import { User } from '../core/modules/user.model';
+import { Credentials } from '../core/models/credentials.model';
+import { User } from '../core/models/user.model';
 import { ApiService } from '../core/services/api.service';
 import { JwtService } from '../core/services/jwt.service';
 

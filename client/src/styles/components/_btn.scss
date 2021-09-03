@@ -5,10 +5,11 @@
   gap: 8px;
   justify-content: center;
   align-items: center;
+  text-align: center;
 
   width: auto;
   min-height: 40px;
-  padding: 0 20px;
+  padding: 12px 20px;
   box-sizing: border-box;
   border-radius: 4px;
   @extend .border;
@@ -46,7 +47,7 @@
 
   &--small {
     font-size: 20px;
-    padding: 0 12px;
+    padding: 8px 12px;
     min-height: 32px;
   }
 }

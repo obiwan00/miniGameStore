@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GamesComponent } from './pages/games/games.component';
-import { LibraryComponent } from './pages/library/library.component';
+
+export const GAME_SERVICE_TOKEN = new InjectionToken('GamesService')
+export const LIBRARY_SERVICE_TOKEN = new InjectionToken('LibraryService')
 
 const routes: Routes = [
-  { path: '', component: GamesComponent },
-  { path: 'library', component: LibraryComponent },
+  { path: '', component: GamesComponent, data: {requiredServiceToken: GAME_SERVICE_TOKEN} },
+  { path: 'library', component: GamesComponent, data: {requiredServiceToken: LIBRARY_SERVICE_TOKEN} },
 ];
-// TODO: Add profile page -- other lazy load module
-// TODO: Add users page -- other lazy load module
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

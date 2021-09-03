@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { Credentials } from 'src/app/core/modules/credentials';
 import { authValidators } from 'src/app/core/validators/auth.validators';
 import { AuthService } from '../../auth.service';
 
