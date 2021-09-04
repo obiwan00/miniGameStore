@@ -5,6 +5,7 @@ const {
   friendBaseValidationMiddleware,
   ifUserHasSuchFriendThrowErrorMiddleware,
   ifUserHasNOTSuchFriendThrowErrorMiddleware,
+  ifSuchFriendNOTExistThrowErrorMiddleware,
 } = require('../middlewares/friend.middleware');
 
 const {
@@ -31,7 +32,7 @@ friendsRouter.get('/', asyncErrorHandle(async (req, res) => {
     search: search,
     status: status,
     count: friendsByQueryParams.count,
-    friends: friendsByQueryParams.friends,
+    users: friendsByQueryParams.friends,
   });
 }));
 
@@ -53,6 +54,7 @@ friendsRouter.post(
   '/:_id',
   [
     friendBaseValidationMiddleware,
+    ifSuchFriendNOTExistThrowErrorMiddleware,
     ifUserHasSuchFriendThrowErrorMiddleware(),
   ],
   asyncErrorHandle(async (req, res) => {

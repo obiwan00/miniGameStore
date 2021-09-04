@@ -19,7 +19,6 @@ authRouter.post('/register', asyncErrorHandle(async (req, res) => {
 
 authRouter.post('/login', validateCredentialsMiddleware(), asyncErrorHandle(async (req, res) => {
   const jwtToken = await createJwtToken(req.userDoc);
-  res.cookie('token', jwtToken, { httpOnly: true });
   res.send({ jwtToken: jwtToken });
 }));
 

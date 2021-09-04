@@ -1,0 +1,18 @@
+.highlighted {
+  display: inline-block;
+  padding: 4px;
+  box-sizing: border-box;
+  background-color: $yellow;
+  border-radius: 4px;
+
+  // .highlighted--success
+  &--success {
+    background-color: $successColor;
+  }
+
+  // .highlighted--error
+  &--error {
+    color: $white;
+    background-color: darken($errorColor, 5%);
+  }
+}

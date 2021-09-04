@@ -1,0 +1,80 @@
+@import "abstracts/mixins";
+@import "abstracts/variables";
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 20px 12px;
+  box-sizing: border-box;
+  background-color: $primaryColor;
+  border-radius: 12px;
+  border-width: 4px;
+
+  // .game-card__title
+
+  &__title {
+    @include adaptiveProperty("font-size", 32, 20);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  // .game-card__price
+
+  &__price {
+    padding: 4px;
+    box-sizing: border-box;
+    background-color: $yellow;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  // .game-card__description
+
+  &__description {
+    margin-bottom: 20px;
+  }
+
+  // .game-card__tag-list
+
+  &__tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    li {
+      display: inline-block;
+      margin-top: 4px;
+      margin-right: 12px;
+      margin-bottom: 4px;
+
+      padding: 2px 4px;
+      box-sizing: border-box;
+      background-color: $yellow;
+      border-radius: 8px;
+      &:nth-child(2n) {
+        background-color: rgba($color: $yellow, $alpha: 0.8);
+      }
+    }
+  }
+
+  // .game-card__buttons
+
+  &__buttons {
+    width: 100%;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // .game-card__btn
+
+  &__btn {
+    // .game-card__btn--fw
+
+    &--fw {
+      grid-column: span 2;
+    }
+  }
+}

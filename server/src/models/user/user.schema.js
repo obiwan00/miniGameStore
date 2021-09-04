@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.post('findOne', function(resUserDoc) {
   if (!resUserDoc) {
-    throw new BadRequestError('There is no such user');
+    throw new BadRequestError('There isn`t any user with such id');
   }
 });
 

@@ -51,13 +51,13 @@ async function createJwtToken(userDoc) {
 /**
  * Check if user credentials are correct
  * @param {object} credentials
- * @param {object} credentials.userDoc -- await User.findOne('...')
- * @param {string} credentials.password
+ * @param {object} credentials.userPassword
+ * @param {string} credentials.passwordToCheck
  * @param {string} [credentials.errorMessage]
  * @throws {AccessDeniedError} if user credentials are incorrect
  * */
-async function validateUserCredentials({ userDoc, password, errorMessage = 'Incorrect email or password.' }) {
-  if (!userDoc || !(await bcrypt.compare(password, userDoc.password))) {
+async function validateUserCredentials({ userPassword, passwordToCheck, errorMessage = 'Incorrect email or password.' }) {
+  if (! await bcrypt.compare(passwordToCheck, userPassword)) {
     throw new AccessDeniedError(errorMessage);
   }
 }

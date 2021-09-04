@@ -1,0 +1,10 @@
+@import "abstracts/variables";
+
+.border {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: $black;
+  border-left-color: $black;
+  border-bottom-color: rgba($black, 0.7);
+  border-right-color: rgba($black, 0.7);
+}
