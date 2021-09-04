@@ -308,7 +308,7 @@ paths:
                       - $ref: "#/components/schemas/friendshipStatuses"
                       - type: string
                         enum: ["any"]
-                  friends:
+                  users:
                     type: array
                     items:
                       anyOf:

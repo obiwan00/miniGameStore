@@ -91,7 +91,7 @@ async function getGames({ userId, limit, offset, search, tags, maxPrice }) {
 
   const formattedGames = await formatGames({ userId, games });
 
-  const gamesMetaData = await Game.aggregate([
+  const filteredGamesMetaData = await Game.aggregate([
     { $match: searchQuery },
     {
       $lookup: {
@@ -105,7 +105,6 @@ async function getGames({ userId, limit, offset, search, tags, maxPrice }) {
     {
       $group: {
         _id: null,
-        biggestPrice: { $max: "$price" },
         availableTags: {
           $addToSet: '$tags.name',
         },
@@ -113,11 +112,21 @@ async function getGames({ userId, limit, offset, search, tags, maxPrice }) {
     },
   ]);
 
+  const allGamesMetaData = await Game.aggregate([
+    { $match: {} },
+    {
+      $group: {
+        _id: null,
+        biggestPrice: { $max: "$price" },
+      }
+    }
+  ]);
+
   return {
     games: formattedGames,
     count: await Game.count(searchQuery),
-    biggestPrice: gamesMetaData[0] ? gamesMetaData[0].biggestPrice : null,
-    availableTags: gamesMetaData[0] ? gamesMetaData[0].availableTags : null,
+    biggestPrice: allGamesMetaData[0] ? allGamesMetaData[0].biggestPrice : null,
+    availableTags: filteredGamesMetaData[0] ? filteredGamesMetaData[0].availableTags : null,
   };
 }
 
@@ -138,7 +147,8 @@ async function applyParamsForGameFilter({ baseFilterQuery = {}, search, tags, ma
 
   if (tags.length !== 0) {
     const tagsIdArray = await Tag.find({ name: { $in: tags } });
-    baseFilterQuery['tags'] = { $all: tagsIdArray };
+    const formattedTagsArray = tagsIdArray.map(tag => tag._id)
+    baseFilterQuery['tags'] = { $all: formattedTagsArray };
   }
 
   if (maxPrice !== -1) {

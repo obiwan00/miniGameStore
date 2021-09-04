@@ -32,7 +32,7 @@ friendsRouter.get('/', asyncErrorHandle(async (req, res) => {
     search: search,
     status: status,
     count: friendsByQueryParams.count,
-    friends: friendsByQueryParams.friends,
+    users: friendsByQueryParams.friends,
   });
 }));
 

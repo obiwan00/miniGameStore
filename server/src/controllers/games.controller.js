@@ -13,7 +13,7 @@ const {
 gamesRouter.get('/', asyncErrorHandle(async (req, res) => {
   const { offset = '0', limit = '0', search = '', maxPrice = '-1', tags = [] } = req.query;
 
-  // TODO: learn more about aggregation in mongoose and refactor a half of backend 😅
+  // TODO: REFACTOR: learn more about aggregation in mongoose and refactor a half of backend 😅
   const gamesByQueryParams = await getGames({
     userId: req.user._id,
     offset: +offset,
