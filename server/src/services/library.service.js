@@ -43,7 +43,7 @@ async function getGamesFromLibrary({ userId, limit, offset, search, tags, maxPri
     limit,
   });
 
-  const biggestPrice = filteredGames.reduce((acc, game) => acc < game.price ? game.price : acc, 0)
+  const biggestPrice = userDoc.library.reduce((acc, game) => acc < game.price ? game.price : acc, 0)
 
   const availableTags = filteredGames.reduce((acc, game) => {
     game.tags.forEach(tag => {
