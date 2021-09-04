@@ -111,8 +111,16 @@ function formatFriends(friends) {
   return friends.map(({ _id, status }) => {
     let fieldsToPick = UNFAMILIAR_USER_PUBLIC_FIELDS;
 
-    if (status && status === 'accepted') {
-      fieldsToPick = FRIEND_PUBLIC_FIELDS;
+    if (status) {
+      if (status === 'accepted') {
+        fieldsToPick = FRIEND_PUBLIC_FIELDS;
+      }
+      // Invert status of 'applied' for user to 'pending'.
+      // Because friends were found in User model, and this record for friendship are correct for found user,
+      // but not for current one.
+      if (status === 'applied') {
+        status = 'pending'
+      }
     }
 
     return {
