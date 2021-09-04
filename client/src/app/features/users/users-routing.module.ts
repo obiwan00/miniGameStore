@@ -1,11 +1,13 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FriendsComponent } from './pages/friends/friends.component';
 import { UsersComponent } from './pages/users/users.component';
 
+export const USERS_SERVICE_TOKEN = new InjectionToken<string>('UsersService')
+export const FRIENDS_SERVICE_TOKEN = new InjectionToken<string>('FriendshipService')
+
 const routes: Routes = [
-  { path: '', component: UsersComponent },
-  { path: 'friends', component: FriendsComponent },
+  { path: '', component: UsersComponent, data: { requiredServiceToken: USERS_SERVICE_TOKEN } },
+  { path: 'friends', component: UsersComponent, data: { requiredServiceToken: FRIENDS_SERVICE_TOKEN } },
 ];
 
 @NgModule({
