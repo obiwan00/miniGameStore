@@ -1,0 +1,24 @@
+<form *ngIf="registerForm" [formGroup]="registerForm" class="container border form" (ngSubmit)='submitFrom()'>
+  <div class="form__main">
+    <h3 class="form__title">Register</h3>
+    <h5 class="form__subtitle" style="color: red;" *ngIf='serverErrorMessage'>
+      {{serverErrorMessage}}
+    </h5>
+    <label class="form__field field">
+      <span class="field__title">Username</span>
+      <input type="text" formControlName='username'>
+    </label>
+    <label class="form__field field">
+      <span class="field__title">Email</span>
+      <input type="email" formControlName='email'>
+    </label>
+    <label class="form__field field">
+      <span class="field__title">Password</span>
+      <input type="password" formControlName='password'>
+    </label>
+  </div>
+  <div class="form__footer">
+    <a [routerLink]="['/auth/login' ]" class="btn">Sign in</a>
+    <button type="submit" class="btn btn--primary" [disabled]="!registerForm.valid || registerForm.disabled">Submit</button>
+  </div>
+</form>

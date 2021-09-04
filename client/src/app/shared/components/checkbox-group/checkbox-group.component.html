@@ -1,0 +1,8 @@
+<form #form="ngForm" [formGroup]="checkboxesGroup" (ngSubmit)="onSubmit()" (change)="onChange()">
+  <label formArrayName="checkboxes" *ngFor="let control of checkboxControls; let i = index">
+    <ng-container [formGroup]="control">
+      <input type="checkbox" [formControlName]="getFormattedFormGroupWithSingleControl(control).key">
+      {{getFormattedFormGroupWithSingleControl(control).key}}
+    </ng-container>
+  </label>
+</form>

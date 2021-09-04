@@ -1,0 +1,49 @@
+@import "abstracts/variables";
+
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: 100%;
+  display: grid;
+  grid-template-areas:
+    "top-bar top-bar top-bar side-bar"
+    "main main main side-bar";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+}
+
+.top-bar {
+  grid-area: top-bar;
+}
+
+.main {
+  position: relative;
+  grid-area: main;
+
+  // .main__inner
+
+  &__inner {
+    @media (min-width: $tabletP1) {
+      column-count: 2;
+      column-gap: 20px;
+    }
+  }
+
+  // .main__item
+
+  &__item {
+    display: block;
+    margin-bottom: 20px;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+.side-bar {
+  grid-area: side-bar;
+  display: grid;
+  gap: 20px;
+  align-content: flex-start;
+}

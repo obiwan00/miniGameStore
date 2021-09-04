@@ -1,0 +1,30 @@
+@use "abstracts/variables";
+
+.container {
+  max-width: #{$containerMaxWidth + px};
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-right: $containerPaddingS;
+  padding-left: $containerPaddingS;
+  @media (min-width: $tabletP1) {
+    padding-right: $containerPadding;
+    padding-left: $containerPadding;
+  }
+}
+
+html,
+body,
+app-root {
+  height: 100%;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+  background: $backgroundColor;
+}

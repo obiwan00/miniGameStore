@@ -1,21 +1,17 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from './core/services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title$?: Observable<any>;
+export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(
+    private userService: UserService,
+  ) { }
 
   ngOnInit() {
-    this.title$ = this.http.get('/api/test').pipe(delay(1000))
+    this.userService.startSession();
   }
 }

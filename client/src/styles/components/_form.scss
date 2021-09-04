@@ -1,0 +1,45 @@
+.form {
+  padding: 40px 28px 32px;
+  box-sizing: border-box;
+
+  border-radius: 16px;
+  background-color: $primaryColor;
+
+  // .form__main
+
+  &__main {
+    display: grid;
+    gap: 20px;
+  }
+
+  // .form__footer
+
+  &__footer {
+    margin-top: 32px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // .form__title
+
+  &__title {
+    text-align: center;
+  }
+
+  // .form__subtitle
+
+  &__subtitle {
+    text-align: center;
+  }
+
+  // .form__field
+
+  &__field {
+  }
+
+  // .form__btn
+
+  &__btn {
+  }
+}

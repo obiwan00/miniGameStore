@@ -1,0 +1,53 @@
+@use "abstracts/variables";
+
+.btn {
+  display: inline-grid;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  width: auto;
+  min-height: 40px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  @extend .border;
+
+  color: $black;
+  background: $yellow;
+  --box-shadow-color: #{$black};
+  box-shadow: 0 0 0 var(--box-shadow-color);
+  transition: all 250ms ease-out;
+
+  font-size: 24px;
+  text-decoration: underline;
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 var(--box-shadow-color);
+    transition: all 250ms ease-out;
+  }
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: $black;
+    background: $grey;
+    --box-shadow-color: #{saturate($grey, 0.5)};
+  }
+
+  // .btn--primary
+
+  &--primary {
+    color: $moonLight;
+    background: $brightRose;
+  }
+
+  // .btn--small
+
+  &--small {
+    font-size: 20px;
+    padding: 8px 12px;
+    min-height: 32px;
+  }
+}

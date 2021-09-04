@@ -1,0 +1,29 @@
+<article class="game-card border">
+  <h3 class="game-card__title">
+    {{game.name}}
+  </h3>
+  <div class="game-card__price border">
+    {{game.price !== 0 ? 'Price:' + (game.price | currency) : 'Free to play'}}
+  </div>
+  <p class="game-card__description">
+    {{game.description}}
+  </p>
+  <ul class="game-card__tag-list">
+    <li *ngFor="let tag of game.tags">
+      {{tag.name}}
+    </li>
+  </ul>
+  <div class="game-card__buttons">
+    <button class="btn" ngxClipboard [cbContent]="game.shareLink" (click)="shareLink()">Share</button>
+
+    <div *ngIf="!game.downloadLink; then buttonsForAddedGames else downloadLink"></div>
+    <ng-template #buttonsForAddedGames>
+      <button class="btn btn--primary game-card__btn" (click)="addGameToLib(game._id)">Add to the Library</button>
+    </ng-template>
+    <ng-template #downloadLink>
+      <a [href]="game.downloadLink" target="_blank" class="btn btn--primary game-card__btn">Download</a>
+      <button class="btn  btn--small game-card__btn game-card__btn--fw" (click)="removeGameFromLib(game._id)"> Remove
+        Game from Lib</button>
+    </ng-template>
+  </div>
+</article>
