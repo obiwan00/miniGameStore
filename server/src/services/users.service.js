@@ -148,6 +148,7 @@ function formatUsers({ userId: currentUserId, users }) {
         sourceObject: user,
         fieldsToPick,
       }),
+      status: friendshipRecord?.status,
     };
   });
 }
