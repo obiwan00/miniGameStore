@@ -11,7 +11,7 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  // TODO: Add validation error messages for loginForm
+  // TODO: ADD: Add validation error messages for loginForm
 
   public serverErrorMessage: null;
   public loginForm: FormGroup;

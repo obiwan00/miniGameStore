@@ -10,7 +10,7 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  // TODO: Add validation error messages for registerForm
+  // TODO: ADD: Add validation error messages for registerForm
 
   public serverErrorMessage: null;
   public registerForm: FormGroup;
