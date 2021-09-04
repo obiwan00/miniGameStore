@@ -6,7 +6,7 @@
     <nav class="header__nav">
       <ul>
         <li>
-          <a [routerLink]="['/users']" routerLinkActive="router-link-active">
+          <a [routerLink]="['/users']" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }">
             Users
           </a>
         </li>
@@ -16,7 +16,7 @@
           </a>
         </li>
         <li>
-          <a [routerLink]="['/games']" routerLinkActive="router-link-active">
+          <a [routerLink]="['/games']" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }">
             Games
           </a>
         </li>
