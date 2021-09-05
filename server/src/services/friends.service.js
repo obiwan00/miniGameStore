@@ -115,10 +115,12 @@ function formatFriends(friends) {
       if (status === 'accepted') {
         fieldsToPick = FRIEND_PUBLIC_FIELDS;
       }
-      // Invert status of 'applied' for user to 'pending'.
-      // Because friends were found in User model, and this record for friendship are correct for found user,
-      // but not for current one.
-      if (status === 'applied') {
+      // Invert status of 'applied' for user to 'pending', and 'pending' to 'applied'.
+      // Because friends were found in User model, and this record for friendship is incorrect.
+      // It will be good to rewrite searching of user with using of aggregate method.
+      if (status === 'pending') {
+        status = 'applied'
+      } else if (status === 'applied') {
         status = 'pending'
       }
     }
