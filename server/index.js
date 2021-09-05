@@ -32,6 +32,8 @@ app.use(
   }),
 );
 
+app.use(express.static(PATH_TO_DIST));
+
 app.use('/api/auth', authRouter);
 app.use('/api/users', authorizationMiddleware, usersRouter);
 app.use('/api/friends', authorizationMiddleware, friendsRouter);
@@ -40,8 +42,6 @@ app.use('/api/library', authorizationMiddleware, libraryRouter);
 app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
 });
-
-app.use('/*', express.static(PATH_TO_DIST));
 
 app.use(asyncErrorHandle(async () => {
   throw new NotFoundError();
