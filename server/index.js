@@ -25,12 +25,11 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.static(PATH_TO_DIST));
-
 app.use(
   OpenApiValidator.middleware({
     apiSpec: './openapi.yaml',
     validateResponses: true,
+    ignorePaths: /^(?!\/api\/.*$).*/,
   }),
 );
 
@@ -42,6 +41,11 @@ app.use('/api/games', authorizationMiddleware, gamesRouter);
 app.use('/api/library', authorizationMiddleware, libraryRouter);
 app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
+});
+
+app.all('*.*', express.static(PATH_TO_DIST));
+app.all('/*', function(req, res) {
+  res.sendFile('/', {root: PATH_TO_DIST});
 });
 
 app.use(asyncErrorHandle(async () => {
