@@ -47,7 +47,7 @@ app.use(asyncErrorHandle(async () => {
   throw new NotFoundError();
 }));
 
-app.use((err, req, res, next) => {
+app.use('/*', (err, req, res, next) => {
   const resStatus = err.status || 500;
   const resMessage = err.message || 'Internal server error';
   console.log(err);
