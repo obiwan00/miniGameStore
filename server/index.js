@@ -18,14 +18,12 @@ const { NotFoundError } = require('./src/utils/errors');
 const { authorizationMiddleware } = require('./src/middlewares/authorization.middleware');
 const { libraryRouter } = require('./src/controllers/library.controller');
 
+const PATH_TO_DIST = path.resolve(__dirname, '../client/dist/miniGameStore');
+
 
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser());
-
-
-const pathToDist = path.resolve(__dirname, '../client/dist/miniGameStore');
-app.use('/', express.static(pathToDist));
 
 app.use(
   OpenApiValidator.middleware({
@@ -42,6 +40,8 @@ app.use('/api/library', authorizationMiddleware, libraryRouter);
 app.get('/api/test', (req, res) => {
   res.send({ message: 'Success!' });
 });
+
+app.use(express.static(PATH_TO_DIST));
 
 app.use(asyncErrorHandle(async () => {
   throw new NotFoundError();
