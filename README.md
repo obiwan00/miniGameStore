@@ -1,6 +1,6 @@
 # MiniGameStore
 
-The api of the app you can find [here](openapi.yaml).
+The API of the app you can find [here](server/openapi.yaml). Also, you can paste source code to [Swagger Editor](https://editor.swagger.io/) to see readable view of the API.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
 
