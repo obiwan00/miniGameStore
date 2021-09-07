@@ -600,7 +600,7 @@ paths:
         - Game
       summary: "Get games"
       description: "Get user's games according to queries"
-      operationId: "getGamesFromLibrary"
+      operationId: "getGames"
       parameters:
         - in: query
           name: offset
