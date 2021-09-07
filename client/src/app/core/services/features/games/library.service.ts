@@ -1,12 +1,10 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { GameQueryParams } from '../models/games-query-params.model';
+import { GameQueryParams } from 'src/app/core/models/games/games-query-params.model';
 import { AbstractGameService } from './games.abstract-service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LibraryService extends AbstractGameService {
 
   constructor(

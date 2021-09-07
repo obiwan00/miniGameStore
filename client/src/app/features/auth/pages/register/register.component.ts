@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { authValidators } from 'src/app/core/validators/auth.validators';
-import { AuthService } from '../../auth.service';
+import { authValidators } from 'src/app/core/constants/auth-validators';
+import { routingUrl } from 'src/app/core/constants/routing/routing-url';
+import { DefaultRes } from 'src/app/core/models/default-res.model';
+import { AuthService } from 'src/app/core/services/features/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,8 +13,9 @@ import { AuthService } from '../../auth.service';
 })
 export class RegisterComponent implements OnInit {
   // TODO: ADD: Add validation error messages for registerForm
+  public routingUrl = routingUrl
 
-  public serverErrorMessage: null;
+  public serverErrorMessage: string;
   public registerForm: FormGroup;
 
   constructor(
@@ -33,9 +36,9 @@ export class RegisterComponent implements OnInit {
     this.authService.register(this.registerForm.value)
       .subscribe({
         next: () => {
-          this.router.navigate(['/auth/login']);
+          this.router.navigate([this.routingUrl.auth.baseUrl, this.routingUrl.auth.pages.login]);
         },
-        error: (error) => {
+        error: (error: DefaultRes) => {
           this.serverErrorMessage = error?.message
           this.registerForm.enable();
         }

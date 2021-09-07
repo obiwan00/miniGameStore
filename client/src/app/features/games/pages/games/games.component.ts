@@ -1,14 +1,11 @@
 import { Component, InjectionToken, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { Game } from 'src/app/core/models/game.model';
+import { Game } from 'src/app/core/models/games/game.model';
 import { CheckboxData } from 'src/app/shared/components/checkbox-group/checkbox-data.model';
-import { GameQueryParams } from '../../models/games-query-params.model';
-import { GamesRes } from '../../models/games-res.model';
-import { AbstractGameService } from '../../services/games.abstract-service';
-import { GamesService } from '../../services/games.service';
-import { LibraryService } from '../../services/library.service';
-
+import { GameQueryParams } from 'src/app/core/models/games/games-query-params.model';
+import { GamesRes } from 'src/app/core/models/games/games-res.model';
+import { AbstractGameService } from 'src/app/core/services/features/games/games.abstract-service';
 
 @Component({
   templateUrl: './games.component.html',

@@ -2,15 +2,13 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { GameQueryParams } from '../models/games-query-params.model';
-import { GamesRes } from '../models/games-res.model';
+import { GameQueryParams } from 'src/app/core/models/games/games-query-params.model';
+import { GamesRes } from 'src/app/core/models/games/games-res.model';
 import { AbstractGameService } from './games.abstract-service';
 
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class GamesService extends AbstractGameService {
 
   constructor(

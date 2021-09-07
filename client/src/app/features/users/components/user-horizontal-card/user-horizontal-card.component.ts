@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs/operators';
-import { FriendlyUser, FriendshipStatus, UnfamiliarUser } from 'src/app/core/models/user.model';
-import { FriendshipService } from '../../services/friendship.service';
+import { FriendlyUser, FriendshipStatus, UnfamiliarUser } from 'src/app/core/models/users/user.model';
+import { FriendshipService } from 'src/app/core/services/features/users/friendship.service';
 
 @Component({
   selector: 'app-user-horizontal-card',

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
+import { navLinks } from 'src/app/core/constants/routing/nav-links';
+import { AuthService } from 'src/app/core/services/features/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,6 +9,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  public navLinks = navLinks
   public isAuthenticated?: Observable<boolean>
 
   constructor(

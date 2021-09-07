@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageKeys } from '../constants/local-storage-keys';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JwtService {
-  private storageName = 'jwtToken';
+  private storageName = LocalStorageKeys.JWT_TOKEN;
 
   getToken(): string | null {
     return window.localStorage.getItem(this.storageName);

@@ -1,4 +1,4 @@
-import { ValidatorFn, Validators } from "@angular/forms";
+import { Validators } from "@angular/forms";
 
 export const authValidators = {
   username: [Validators.minLength(2), Validators.maxLength(20)],
