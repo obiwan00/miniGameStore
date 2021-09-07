@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
-import { GameQueryParams } from "../models/games-query-params.model";
-import { GamesRes } from "../models/games-res.model";
+import { GameQueryParams } from "src/app/core/models/games/games-query-params.model";
+import { GamesRes } from "src/app/core/models/games/games-res.model";
 
 export abstract class AbstractGameService {
   abstract getGames(params: Partial<GameQueryParams>) : Observable<GamesRes>

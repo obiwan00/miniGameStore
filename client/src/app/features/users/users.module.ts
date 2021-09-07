@@ -1,13 +1,15 @@
-import { InjectionToken, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FRIENDS_SERVICE_TOKEN, UsersRoutingModule, USERS_SERVICE_TOKEN } from './users-routing.module';
 import { UsersComponent } from './pages/users/users.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { UserHorizontalCardComponent } from './components/user-horizontal-card/user-horizontal-card.component';
 import { UserHorizontalCardHeadingComponent } from './components/user-horizontal-card-heading/user-horizontal-card-heading.component';
-import { UsersService } from './services/users.service';
-import { FriendshipService } from './services/friendship.service';
+import { UsersService } from '../../core/services/features/users/users.service';
+import { FriendshipService } from '../../core/services/features/users/friendship.service';
+import { LoaderModule } from 'src/app/shared/components/loader/loader.module';
+import { SearchBarModule } from 'src/app/shared/components/search-bar/search-bar.module';
+import { UserService } from 'src/app/core/services/user.service';
 
 
 @NgModule({
@@ -17,6 +19,8 @@ import { FriendshipService } from './services/friendship.service';
     UserHorizontalCardHeadingComponent
   ],
   providers: [
+    UserService,
+    FriendshipService,
     {
       provide: USERS_SERVICE_TOKEN,
       useClass: UsersService,
@@ -28,8 +32,9 @@ import { FriendshipService } from './services/friendship.service';
   ],
   imports: [
     CommonModule,
-    SharedModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    LoaderModule,
+    SearchBarModule,
   ]
 })
 export class UsersModule { }

@@ -14,7 +14,7 @@
     </label>
   </div>
   <div class="form__footer">
-    <a [routerLink]="['/auth/register' ]" class="btn">Sign Up</a>
+    <a [routerLink]="[ '/', routerUrl.auth.baseUrl, routerUrl.auth.pages.register ]" class="btn">Sign Up</a>
     <button type="submit" class="btn btn--primary" [disabled]="!loginForm.valid || loginForm.disabled">Submit</button>
   </div>
 </form>

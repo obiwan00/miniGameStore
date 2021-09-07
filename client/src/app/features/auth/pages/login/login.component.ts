@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { authValidators } from 'src/app/core/validators/auth.validators';
-import { AuthService } from '../../auth.service';
+import { authValidators } from 'src/app/core/constants/auth-validators';
+import { routingUrl } from 'src/app/core/constants/routing/routing-url';
+import { DefaultRes } from 'src/app/core/models/default-res.model';
+import { AuthService } from 'src/app/core/services/features/auth.service';
 
 
 @Component({
@@ -12,8 +14,9 @@ import { AuthService } from '../../auth.service';
 })
 export class LoginComponent implements OnInit {
   // TODO: ADD: Add validation error messages for loginForm
+  public routerUrl = routingUrl
 
-  public serverErrorMessage: null;
+  public serverErrorMessage: string;
   public loginForm: FormGroup;
 
   constructor(
@@ -35,8 +38,7 @@ export class LoginComponent implements OnInit {
         next: () => {
           this.router.navigate(['/']);
         },
-        error: (error) => {
-          console.error(error);
+        error: (error: DefaultRes) => {
           this.serverErrorMessage = error?.message
           this.loginForm.enable();
         }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Game } from 'src/app/core/models/game.model';
-import { LibraryService } from '../../services/library.service';
+import { Game } from 'src/app/core/models/games/game.model';
+import { LibraryService } from 'src/app/core/services/features/games/library.service';
 
 @Component({
   selector: 'app-game-card',

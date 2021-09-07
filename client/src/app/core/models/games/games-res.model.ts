@@ -1,4 +1,4 @@
-import { Game } from "src/app/core/models/game.model";
+import { Game } from "src/app/core/models/games/game.model";
 
 export interface GamesRes {
   limit: number

@@ -5,24 +5,10 @@
     </a>
     <nav class="header__nav">
       <ul>
-        <li>
-          <a [routerLink]="['/users']" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }">
-            Users
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="['/users/friends']" routerLinkActive="router-link-active">
-            Friends
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="['/games']" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{ exact: true }">
-            Games
-          </a>
-        </li>
-        <li>
-          <a [routerLink]="['/games/library']" routerLinkActive="router-link-active">
-            Library
+        <li *ngFor="let navLink of navLinks">
+          <a [routerLink]="navLink.url" routerLinkActive="router-link-active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            {{navLink.title}}
           </a>
         </li>
       </ul>

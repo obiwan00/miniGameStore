@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { User } from '../models/user.model';
+import { AuthService } from 'src/app/core/services/features/auth.service';
+import { User } from 'src/app/core/models/users/user.model';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 

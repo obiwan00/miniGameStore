@@ -1,4 +1,4 @@
-import { FriendlyUser, UnfamiliarUser } from "src/app/core/models/user.model";
+import { FriendlyUser, UnfamiliarUser } from "./user.model";
 
 export interface UsersRes {
   offset: number;

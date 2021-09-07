@@ -1,9 +1,9 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { UsersQueryParams } from '../../models/users-query-params.model';
-import { UsersRes } from '../../models/users-res.model copy';
-import { AbstractUsersService } from '../../services/users.abstract-service';
+import { UsersQueryParams } from 'src/app/core/models/users/users-query-params.model';
+import { UsersRes } from 'src/app/core/models/users/users-res.model';
+import { AbstractUsersService } from 'src/app/core/services/features/users/users.abstract-service';
 
 @Component({
   selector: 'app-users',
