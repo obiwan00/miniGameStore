@@ -7,9 +7,9 @@
   <main class="main">
     <app-loader *ngIf="isLoaderActive"></app-loader>
     <div class="main__inner" *ngIf="!isLoaderActive">
-      <app-game-card class="main__item" *ngFor="let game of (gamesRes$ | async)?.games" [game]='game'
+      <app-game-card class="main__item" *ngFor="let game of gamesRes?.games" [game]='game'
         (cardEmitter)="searchGames()"></app-game-card>
-      <div *ngIf="!(gamesRes$ | async)?.games?.length">There are not any results 😅</div>
+      <div *ngIf="!gamesRes?.games?.length">There are not any results 😅</div>
     </div>
   </main>
 

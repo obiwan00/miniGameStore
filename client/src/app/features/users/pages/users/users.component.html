@@ -1,15 +1,16 @@
 <section class="container">
   <header class="header">
     <app-search-bar (formEmitter)="this.searchValue = $event; searchUsers()"
-     [searchDescriptionMessage]="'Search by username'"></app-search-bar>
+      [searchDescriptionMessage]="'Search by username'"></app-search-bar>
   </header>
 
   <main class="main">
     <app-loader *ngIf="isLoaderActive"></app-loader>
     <div class="main__inner" *ngIf="!isLoaderActive">
       <app-user-horizontal-card-heading></app-user-horizontal-card-heading>
-      <app-user-horizontal-card *ngFor="let user of (usersRes$ | async)?.users" [user]="user"
+      <app-user-horizontal-card *ngFor="let user of usersRes?.users" [user]="user"
         (reloadRequestEmitter)="searchUsers()"></app-user-horizontal-card>
+      <div *ngIf="!usersRes?.users?.length">There are not any results 😅</div>
     </div>
   </main>
 </section>
