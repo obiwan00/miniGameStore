@@ -18,6 +18,8 @@ export class UsersComponent implements OnInit {
   public isLoaderActive: boolean = true
   public searchValue: string = ''
 
+  // TODO: ADD: pagination for users res
+
   constructor(
     private route: ActivatedRoute,
     private injector: Injector,

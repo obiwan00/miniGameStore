@@ -27,6 +27,8 @@ export class GamesComponent implements OnInit {
   public maxPriceInput: number
   public currentSearchPrice: number
 
+    // TODO: ADD: pagination for games res
+
   constructor(
     private route: ActivatedRoute,
     private injector: Injector,
