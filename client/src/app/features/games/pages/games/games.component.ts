@@ -49,11 +49,9 @@ export class GamesComponent implements OnInit {
     }
     this.gamesService.getGames(params).subscribe({
       next: (res) => {
-        console.log(res)
         this.gamesRes = res
         this.updatePriceFields()
         this.updateTagsInput()
-        console.log(this.maxPriceInput, this.currentSearchPrice)
         this.isLoaderActive = false
       }
     })
