@@ -49,19 +49,22 @@ export class AuthService {
 
   startSession() {
     if (this.jwtService.getToken()) {
-      this.apiService.get('/users/me')
-        .subscribe(
-          data => {
-            this.initUser(data.user);
-          },
-          err => {
-            console.error(err?.message);
-            this.logout();
-          },
-        );
+      this.fetchAndUpdateUserData()
     } else {
       this.logout();
     }
+  }
+
+  fetchAndUpdateUserData() {
+    this.apiService.get('/users/me').subscribe(
+      data => {
+        this.initUser(data.user);
+      },
+      err => {
+        console.error(err?.message);
+        this.logout();
+      },
+    );
   }
 
   initUser(user: User) {
