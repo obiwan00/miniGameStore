@@ -1,0 +1,45 @@
+<div class="container">
+  <div *ngIf="!isUserLaded; then loader else profile"></div>
+  <ng-template #loader>
+    <app-loader></app-loader>
+  </ng-template>
+  <ng-template #profile>
+    <form [formGroup]="profileForm" class="border profile" (ngSubmit)='submitFrom()'>
+
+      <h1 class="profile__title">Profile</h1>
+
+      <label class="profile__filed field" [ngClass]="{'field--error': profileForm.get('username')?.errors}">
+        <span class="field__title">Username</span>
+        <input type="text" formControlName="username">
+        <span class="field__error">
+          {{
+          profileForm.get('username')?.errors?.stringLength ?
+          profileForm.get('username')?.errors?.stringLength.getErrorMessage('username') : ''
+          }}
+        </span>
+      </label>
+
+      <label class="profile__filed field">
+        <span class="field__title" disabled>Email</span>
+        <input type="email" formControlName="email">
+      </label>
+
+      <label class="profile__filed field">
+        <span class="field__title" disabled>Birthday</span>
+        <input type="date" formControlName="birthday" [min]="minInputDate" [max]="maxInputDate">
+      </label>
+
+      <div class="profile__buttons">
+        <a [routerLink]="['/']" class="btn" disabled>
+          Change password
+          <br> <small style="font-size: 14px; color: darkblue;">not implemented yet</small>
+        </a>
+        <button type="submit" class="btn btn--primary"
+          [disabled]="profileForm.dirty && !profileForm.valid || !isFormDataChanged">
+          Save changes
+        </button>
+      </div>
+
+    </form>
+  </ng-template>
+</div>

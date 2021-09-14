@@ -22,5 +22,8 @@ export const navLinks: NavLink[] = [
     url: [routingUrl.users.baseUrl, routingUrl.users.pages.friends],
     title: 'Friends',
   },
-
+  {
+    url: [routingUrl.profile.baseUrl],
+    title: 'Profile',
+  },
 ]
