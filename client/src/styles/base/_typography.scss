@@ -3,31 +3,31 @@
 
 body {
   font-family: v.$primaryFont;
-  font-size: 20px
+  font-size: 20px;
 }
 
 .h1,
 h1 {
   @include m.adaptiveProperty("font-size", 72, 56);
-  @include m.adaptiveProperty("line-height", 90, 62);
+  line-height: 1.5;
   font-weight: 700;
 }
 .h2,
 h2 {
   @include m.adaptiveProperty("font-size", 56, 32);
-  @include m.adaptiveProperty("line-height", 62, 38);
+  line-height: 1.5;
   font-weight: 700;
 }
 .h3,
 h3 {
   @include m.adaptiveProperty("font-size", 48, 28);
-  @include m.adaptiveProperty("line-height", 52, 32);
+  line-height: 1.5;
   font-weight: 700;
 }
 .h4,
 h4 {
   @include m.adaptiveProperty("font-size", 36, 20);
-  @include m.adaptiveProperty("line-height", 42, 28);
+  line-height: 1.5;
   font-weight: 700;
 }
 
