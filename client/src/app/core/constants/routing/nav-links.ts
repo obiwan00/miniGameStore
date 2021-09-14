@@ -7,6 +7,14 @@ interface NavLink {
 
 export const navLinks: NavLink[] = [
   {
+    url: [routingUrl.games.baseUrl],
+    title: 'Games',
+  },
+  {
+    url: [routingUrl.games.baseUrl, routingUrl.games.pages.library],
+    title: 'Library',
+  },
+  {
     url: [routingUrl.users.baseUrl],
     title: 'Users',
   },
@@ -14,12 +22,5 @@ export const navLinks: NavLink[] = [
     url: [routingUrl.users.baseUrl, routingUrl.users.pages.friends],
     title: 'Friends',
   },
-  {
-    url: [routingUrl.games.baseUrl],
-    title: 'Games',
-  },
-  {
-    url: [routingUrl.games.baseUrl, routingUrl.games.pages.library],
-    title: 'Library',
-  }
+
 ]
