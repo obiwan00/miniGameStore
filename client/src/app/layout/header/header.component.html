@@ -1,7 +1,12 @@
 <header *ngIf="isAuthenticated | async" class="header">
   <div class="header__container container">
     <a class="header__logo" [routerLink]="['/']">
-      miniGameStore
+      <img src="assets/game-store-logo.svg" alt="logo">
+      <span class="header__logo-title">
+        <span>mini</span>
+        <span>Game</span>
+        <span>Store</span>
+      </span>
     </a>
     <nav class="header__nav">
       <ul>
@@ -14,9 +19,9 @@
       </ul>
     </nav>
     <div class="header__auth">
-      <a [routerLink]="" (click)="logout()" class="btn">
+      <button (click)="logout()" class="btn">
         Sing out
-      </a>
+      </button>
     </div>
   </div>
 </header>
