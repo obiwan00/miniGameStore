@@ -9,7 +9,6 @@ import { UsersService } from '../../core/services/features/users/users.service';
 import { FriendshipService } from '../../core/services/features/users/friendship.service';
 import { LoaderModule } from 'src/app/shared/components/loader/loader.module';
 import { SearchBarModule } from 'src/app/shared/components/search-bar/search-bar.module';
-import { UserService } from 'src/app/core/services/user.service';
 
 
 @NgModule({
@@ -19,7 +18,6 @@ import { UserService } from 'src/app/core/services/user.service';
     UserHorizontalCardHeadingComponent
   ],
   providers: [
-    UserService,
     FriendshipService,
     {
       provide: USERS_SERVICE_TOKEN,

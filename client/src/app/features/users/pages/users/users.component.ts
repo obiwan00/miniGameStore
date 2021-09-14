@@ -1,6 +1,6 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute} from '@angular/router';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Component, Injector, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { UsersQueryParams } from 'src/app/core/models/users/users-query-params.model';
 import { UsersRes } from 'src/app/core/models/users/users-res.model';
 import { AbstractUsersService } from 'src/app/core/services/features/users/users.abstract-service';
@@ -10,15 +10,15 @@ import { AbstractUsersService } from 'src/app/core/services/features/users/users
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit, OnDestroy {
-  private usersService : AbstractUsersService
+export class UsersComponent implements OnInit {
+  private usersService: AbstractUsersService
 
-  private subscriptions: Subscription[] = []
-  private usersResSubject: BehaviorSubject<UsersRes>
-  public usersRes$: Observable<UsersRes>
+  public usersRes: UsersRes = ({} as UsersRes)
 
   public isLoaderActive: boolean = true
   public searchValue: string = ''
+
+  // TODO: ADD: pagination for users res
 
   constructor(
     private route: ActivatedRoute,
@@ -29,14 +29,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     const serviceToken = this.route.snapshot.data.requiredServiceToken
     this.usersService = this.injector.get<AbstractUsersService>(serviceToken)
 
-    this.usersResSubject = new BehaviorSubject<UsersRes>(({} as UsersRes))
-    this.usersRes$ = this.usersResSubject.asObservable();
-
     this.searchUsers()
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   searchUsers() {
@@ -47,7 +40,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     this.usersService.getUsers(params).subscribe((res) => {
-      this.usersResSubject.next(res)
+      this.usersRes = res
       this.isLoaderActive = false
     })
   }

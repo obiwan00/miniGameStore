@@ -11,11 +11,11 @@ export class JwtService {
     return window.localStorage.getItem(this.storageName);
   }
 
-  saveToken(jwtToken: string) {
+  saveToken(jwtToken: string): void {
     window.localStorage.setItem(this.storageName, jwtToken);
   }
 
-  destroyToken() {
+  destroyToken(): void {
     window.localStorage.removeItem(this.storageName);
   }
 }

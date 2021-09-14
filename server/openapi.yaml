@@ -185,7 +185,7 @@ paths:
                 username:
                   $ref: "#/components/schemas/username"
                 birthday:
-                  $ref: "#/components/schemas/date"
+                  $ref: "#/components/schemas/nullableDate"
       responses:
         "200":
           description: "Success"

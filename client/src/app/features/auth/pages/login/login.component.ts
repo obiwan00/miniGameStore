@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { authValidators } from 'src/app/core/constants/auth-validators';
 import { routingUrl } from 'src/app/core/constants/routing/routing-url';
 import { DefaultRes } from 'src/app/core/models/default-res.model';
-import { AuthService } from 'src/app/core/services/features/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({

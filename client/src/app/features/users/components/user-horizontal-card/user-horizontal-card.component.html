@@ -6,7 +6,7 @@
     {{userEmail ? userEmail : '--'}}
   </div>
   <div class="user-horizontal-card__birthday">
-    {{userBirthday ? userBirthday : '--'}}
+    {{userBirthday ? (userBirthday | date) : '--'}}
   </div>
   <div class="user-horizontal-card__status">
     <ng-container *ngIf="!user?.status">

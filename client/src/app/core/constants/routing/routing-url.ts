@@ -20,4 +20,15 @@ export const routingUrl = {
       library: 'library',
     }
   },
+  profile: {
+    baseUrl: 'profile',
+    pages: {
+      profile: '',
+      changePassword: 'change-password',
+    }
+  },
+  '500': {
+    baseUrl: '500',
+    data: { title: '500', description: 'Internal server error' }
+  },
 }
