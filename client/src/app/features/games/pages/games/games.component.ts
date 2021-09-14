@@ -11,7 +11,6 @@ import { AbstractGameService } from 'src/app/core/services/features/games/games.
   styleUrls: ['./games.component.scss']
 })
 export class GamesComponent implements OnInit {
-  // TODO: REFACTOR: based on route inject appropriate service
   private gamesService: AbstractGameService
 
   public isLoaderActive: boolean = true
