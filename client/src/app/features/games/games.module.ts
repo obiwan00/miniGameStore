@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { GamesRoutingModule, GAME_SERVICE_TOKEN, LIBRARY_SERVICE_TOKEN } from './games-routing.module';
 import { GamesComponent } from './pages/games/games.component';
@@ -38,6 +39,7 @@ import { SearchBarModule } from 'src/app/shared/components/search-bar/search-bar
     LoaderModule,
     RangeSliderModule,
     SearchBarModule,
+    NgxPaginationModule,
   ]
 })
 export class GamesModule { }
