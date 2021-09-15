@@ -11,14 +11,10 @@
       <label class="profile__filed field" [ngClass]="{'field--error': profileForm.get('username')?.errors}">
         <span class="field__title">Username</span>
         <input type="text" formControlName="username">
-        <span class="field__error">
-          {{
-          profileForm.get('username')?.errors?.stringLength ?
-          profileForm.get('username')?.errors?.stringLength.getErrorMessage('username') : ''
-          }}
+        <span class="field__error" *ngIf="profileForm.get('username')?.errors?.stringLength">
+          {{profileForm.get('username')?.errors?.stringLength.getErrorMessage('username')}}
         </span>
       </label>
-
       <label class="profile__filed field">
         <span class="field__title" disabled>Email</span>
         <input type="email" formControlName="email">
