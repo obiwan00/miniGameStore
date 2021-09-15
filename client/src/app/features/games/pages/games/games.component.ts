@@ -11,23 +11,31 @@ import { AbstractGameService } from 'src/app/core/services/features/games/games.
   styleUrls: ['./games.component.scss']
 })
 export class GamesComponent implements OnInit {
-  private gamesService: AbstractGameService
-
   public isLoaderActive: boolean = true
 
-  public gamesRes: GamesRes = ({} as GamesRes)
+  private gamesService: AbstractGameService
 
+  // Req and res fields
+  public params: Partial<GameQueryParams>
+  public gamesRes: GamesRes | null = (null)
   public games: Game[] = []
 
+  // Pagination fields
+  public offset = 0
+  public gameItemsPerPage = 4
+  public currentPage = 1
+
+  // Search fields
   public searchValue: string = ''
 
+  // Tag checkboxes fields
   public selectedTags: string[] = []
   public tagsInput: CheckboxData[]
 
+  // Price range slider fields
   public maxPriceInput: number
   public currentSearchPrice: number
 
-    // TODO: ADD: pagination for games res
 
   constructor(
     private route: ActivatedRoute,
@@ -43,14 +51,11 @@ export class GamesComponent implements OnInit {
 
   searchGames() {
     this.isLoaderActive = true;
-    const params: Partial<GameQueryParams> = {
-      search: this.searchValue,
-      tags: this.selectedTags,
-      maxPrice: this.currentSearchPrice ?? -1,
-    }
-    this.gamesService.getGames(params).subscribe({
+    this.setParamsProps()
+    this.gamesService.getGames(this.params).subscribe({
       next: (res) => {
         this.gamesRes = res
+        console.table({ gamesRes: this.gamesRes })
         this.updatePriceFields()
         this.updateTagsInput()
         this.isLoaderActive = false
@@ -58,21 +63,42 @@ export class GamesComponent implements OnInit {
     })
   }
 
+  setParamsProps() {
+    this.params = {
+      offset: this.offset,
+      limit: this.gameItemsPerPage,
+      search: this.searchValue,
+      tags: this.selectedTags,
+      maxPrice: this.currentSearchPrice ?? -1,
+    }
+  }
+
   updateTagsInput() {
-    if (typeof this.gamesRes.availableTags === 'undefined') {
+    if (typeof this.gamesRes?.availableTags === 'undefined') {
       this.tagsInput = []
     }
 
-    const availableTags = this.gamesRes.availableTags
-    const searchTags = this.gamesRes.tags
+    const availableTags = this.gamesRes?.availableTags ?? []
+    const searchTags = this.gamesRes?.tags ?? []
     this.tagsInput = availableTags?.map(availableTag => {
-      return { value: searchTags.includes(availableTag), name: availableTag }
+      return { value: searchTags?.includes(availableTag), name: availableTag }
     })
   }
 
   updatePriceFields() {
-    this.maxPriceInput = this.gamesRes.biggestPrice ?? 0
-    this.currentSearchPrice = this.gamesRes.maxPrice ?? -1
+    this.maxPriceInput = this.gamesRes?.biggestPrice ?? 0
+    this.currentSearchPrice = this.gamesRes?.maxPrice ?? -1
   }
 
+  resetPaginationProps() {
+    this.offset = 0
+    this.currentPage = 1
+  }
+
+  pageChanged($event: number) {
+    this.currentPage = $event
+    this.offset = ($event - 1) * this.gameItemsPerPage
+
+    this.searchGames();
+  }
 }
