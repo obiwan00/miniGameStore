@@ -1,8 +1,11 @@
 @import "abstracts/variables";
 
 .container {
+  position: relative;
   padding-top: 20px;
   padding-bottom: 20px;
+  box-sizing: border-box;
+
   height: 100%;
   display: grid;
   grid-template-areas:
@@ -20,17 +23,25 @@
 .main {
   position: relative;
   grid-area: main;
+}
 
-  // .main__inner
+.games {
+  // .games__inner
 
   &__inner {
+    display: grid;
+    gap: 20px;
+  }
+
+  // .games__cards
+  &__cards {
     @media (min-width: $tabletP1) {
       column-count: 2;
       column-gap: 20px;
     }
   }
 
-  // .main__item
+  // .games__item
 
   &__item {
     display: block;
@@ -39,9 +50,24 @@
     page-break-inside: avoid;
     break-inside: avoid;
   }
+
+  // .games__pagination
+  &__pagination {
+    display: block;
+    margin: 0 auto;
+  }
 }
 
 .side-bar {
+  align-self: start;
+  position: sticky;
+  top: 20px;
+
+  max-height: calc(100vh - 10px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+
   grid-area: side-bar;
   display: grid;
   gap: 20px;

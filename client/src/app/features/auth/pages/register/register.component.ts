@@ -12,7 +12,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  // TODO: ADD: Add validation error messages for registerForm
   public routingUrl = routingUrl
 
   public serverErrorMessage: string;

@@ -4,20 +4,25 @@
       [searchDescriptionMessage]="'Search by game name'"></app-search-bar>
   </header>
 
-  <main class="main">
+  <main class="main games">
     <app-loader *ngIf="isLoaderActive"></app-loader>
-    <div class="main__inner" *ngIf="!isLoaderActive">
-      <app-game-card class="main__item" *ngFor="let game of gamesRes?.games" [game]='game'
-        (cardEmitter)="searchGames()"></app-game-card>
+    <div class="games__inner" *ngIf="!isLoaderActive">
+      <div class="games__cards">
+        <app-game-card class="games__item" *ngFor="let game of (gamesRes?.games ?? []) |
+         paginate: {itemsPerPage: gameItemsPerPage, currentPage, totalItems: gamesRes?.count}" [game]="game"
+          (cardEmitter)="searchGames()"></app-game-card>
+      </div>
+      <pagination-controls class="games__pagination pagination"
+        (pageChange)="pageChanged($event)" [autoHide]="true"></pagination-controls>
       <div *ngIf="!gamesRes?.games?.length">There are not any results 😅</div>
     </div>
   </main>
 
   <div class="side-bar">
     <app-range-slider [disabled]="isLoaderActive" [maxValue]="maxPriceInput" [currentInputValue]="currentSearchPrice"
-      (formEmitter)="currentSearchPrice = $event; searchGames()"></app-range-slider>
+      (formEmitter)="currentSearchPrice = $event; resetPaginationProps(); searchGames()"></app-range-slider>
     <app-checkbox-group [disabled]="isLoaderActive" [checkboxesDataInput]="tagsInput"
-      (formEmitter)="selectedTags = $event; searchGames()">
+      (formEmitter)="selectedTags = $event; resetPaginationProps(); searchGames()">
     </app-checkbox-group>
   </div>
 </section>

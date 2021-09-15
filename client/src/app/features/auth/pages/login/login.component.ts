@@ -13,7 +13,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  // TODO: ADD: Add validation error messages for loginForm
   public routerUrl = routingUrl
 
   public serverErrorMessage: string;

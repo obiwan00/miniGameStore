@@ -4,22 +4,36 @@
     <h5 class="form__subtitle" style="color: red;" *ngIf='serverErrorMessage'>
       {{serverErrorMessage}}
     </h5>
-    <label class="form__field field">
+    <label class="form__field field"
+      [ngClass]="{'field--error': registerForm.get('username')?.errors && registerForm.get('username')?.touched}">
       <span class="field__title">Username</span>
       <input type="text" formControlName='username'>
+      <span class="field__error"
+        *ngIf="registerForm.get('username')?.errors?.stringLength && registerForm.get('username')?.touched">
+        {{registerForm.get('username')?.errors?.stringLength.getErrorMessage('username')}}
+      </span>
     </label>
-    <label class="form__field field">
+    <label class="form__field field"
+      [ngClass]="{'field--error': registerForm.get('email')?.errors && registerForm.get('email')?.touched}">
       <span class="field__title">Email</span>
       <input type="email" formControlName='email'>
+      <span class="field__error" *ngIf="registerForm.get('email')?.errors && registerForm.get('email')?.touched">
+        Email is invalid
+      </span>
     </label>
-    <label class="form__field field">
+    <label class="form__field field"
+      [ngClass]="{'field--error': registerForm.get('password')?.errors && registerForm.get('password')?.touched}">
       <span class="field__title">Password</span>
       <input type="password" formControlName='password'>
+      <span class="field__error"
+        *ngIf="registerForm.get('password')?.errors?.stringLength && registerForm.get('password')?.touched">
+        {{registerForm.get('password')?.errors?.stringLength.getErrorMessage('password')}}
+      </span>
     </label>
   </div>
   <div class="form__footer">
-    <a [routerLink]="[ '/', routingUrl.auth.baseUrl, routingUrl.auth.pages.login ]" class="btn">Sign in</a>
+    <a [routerLink]="[ '/', routingUrl.auth.baseUrl, routingUrl.auth.pages.login ]" class="btn">Login</a>
     <button type="submit" class="btn btn--primary"
-      [disabled]="!registerForm.valid || registerForm.disabled">Submit</button>
+      [disabled]="!registerForm.valid || registerForm.disabled">Register</button>
   </div>
 </form>

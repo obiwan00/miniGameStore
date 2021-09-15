@@ -1,0 +1,12 @@
+.pagination {
+  .ngx-pagination {
+    .current {
+      @extend .border;
+      background-color: $brightRose;
+      border-radius: 4px;
+    }
+    li {
+      margin: 0 2px;
+    }
+  }
+}

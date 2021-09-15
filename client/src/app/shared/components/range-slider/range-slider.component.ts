@@ -19,6 +19,7 @@ export class RangeSliderComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
+    this.maxValue = Math.ceil(this.maxValue)
     this.currentValue = this.currentInputValue < this.minValue ? this.maxValue : this.currentInputValue
     this.disabled ? this.formGroup.disable() : this.formGroup.enable()
   }
