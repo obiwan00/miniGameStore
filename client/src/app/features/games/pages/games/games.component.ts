@@ -99,6 +99,24 @@ export class GamesComponent implements OnInit {
     this.currentPage = $event
     this.offset = ($event - 1) * this.gameItemsPerPage
 
-    this.searchGames();
+    this.searchGames()
+  }
+
+  onSearchChange($event: string) {
+    this.searchValue = $event
+    this.resetPaginationProps()
+    this.searchGames()
+  }
+
+  onRangeSliderChange($event: number) {
+    this.currentSearchPrice = $event
+    this.resetPaginationProps()
+    this.searchGames()
+  }
+
+  onCheckboxGroupChange($event: string[]) {
+    this.selectedTags = $event
+    this.resetPaginationProps()
+    this.searchGames()
   }
 }
