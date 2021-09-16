@@ -1,0 +1,11 @@
+@import "abstracts/variables";
+
+.user-horizontal-card {
+  font-weight: 700;
+  background-color: $primaryColor;
+
+  th {
+    padding: 12px 8px;
+    border-bottom: 2px solid $black;
+  }
+}

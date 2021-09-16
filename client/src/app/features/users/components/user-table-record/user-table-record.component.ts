@@ -1,15 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs/operators';
 import { FriendlyUser, FriendshipStatus, UnfamiliarUser } from 'src/app/core/models/users/user.model';
 import { FriendshipService } from 'src/app/core/services/features/users/friendship.service';
 
 @Component({
-  selector: 'app-user-horizontal-card',
-  templateUrl: './user-horizontal-card.component.html',
-  styleUrls: ['./user-horizontal-card.component.scss']
+  selector: 'user-table-record',
+  templateUrl: './user-table-record.component.html',
+  styleUrls: ['./user-table-record.component.scss']
 })
-export class UserHorizontalCardComponent implements OnInit {
+export class UserTableRecord implements OnInit {
+  @ViewChild('template') template: any
+
   @Output() reloadRequestEmitter = new EventEmitter<undefined>()
   @Input() user: UnfamiliarUser | FriendlyUser
   public friendshipStatus = FriendshipStatus
@@ -18,10 +20,15 @@ export class UserHorizontalCardComponent implements OnInit {
   constructor(
     private friendshipService: FriendshipService,
     private toastr: ToastrService,
+    private viewContainerRef: ViewContainerRef,
   ) { }
 
   ngOnInit(): void {
     this.isCardDisabled = false
+  }
+
+  ngAfterViewInit(): void {
+    Promise.resolve().then(() => { this.viewContainerRef.createEmbeddedView(this.template) })
   }
 
   get userEmail() {

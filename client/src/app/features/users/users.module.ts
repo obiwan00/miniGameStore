@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { FRIENDS_SERVICE_TOKEN, UsersRoutingModule, USERS_SERVICE_TOKEN } from './users-routing.module';
 import { UsersComponent } from './pages/users/users.component';
-import { UserHorizontalCardComponent } from './components/user-horizontal-card/user-horizontal-card.component';
-import { UserHorizontalCardHeadingComponent } from './components/user-horizontal-card-heading/user-horizontal-card-heading.component';
+import { UserTableRecord } from './components/user-table-record/user-table-record.component';
+import { UserTableHeading } from './components/user-horizontal-card-heading/user-table-heading.component';
 import { UsersService } from '../../core/services/features/users/users.service';
 import { FriendshipService } from '../../core/services/features/users/friendship.service';
 import { LoaderModule } from 'src/app/shared/components/loader/loader.module';
@@ -14,8 +15,8 @@ import { SearchBarModule } from 'src/app/shared/components/search-bar/search-bar
 @NgModule({
   declarations: [
     UsersComponent,
-    UserHorizontalCardComponent,
-    UserHorizontalCardHeadingComponent
+    UserTableRecord,
+    UserTableHeading,
   ],
   providers: [
     FriendshipService,
@@ -33,6 +34,7 @@ import { SearchBarModule } from 'src/app/shared/components/search-bar/search-bar
     UsersRoutingModule,
     LoaderModule,
     SearchBarModule,
+    NgxPaginationModule,
   ]
 })
 export class UsersModule { }

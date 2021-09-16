@@ -15,9 +15,26 @@
 
 .main {
   flex-grow: 1;
-  // .main__inner
+}
+
+.users {
+  // .users__inner
+
   &__inner {
-    display: grid;
-    gap: 20px;
+  }
+
+  // .users__table
+
+  &__table {
+    width: 100%;
+  }
+
+  // .users__pagination
+
+  &__pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
+

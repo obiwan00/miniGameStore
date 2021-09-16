@@ -1,6 +1,6 @@
 <section class="container">
   <header class="top-bar">
-    <app-search-bar (formEmitter)="this.searchValue = $event; searchGames()"
+    <app-search-bar (formEmitter)="onSearchChange($event)"
       [searchDescriptionMessage]="'Search by game name'"></app-search-bar>
   </header>
 
@@ -20,9 +20,9 @@
 
   <div class="side-bar">
     <app-range-slider [disabled]="isLoaderActive" [maxValue]="maxPriceInput" [currentInputValue]="currentSearchPrice"
-      (formEmitter)="currentSearchPrice = $event; resetPaginationProps(); searchGames()"></app-range-slider>
+      (formEmitter)="onRangeSliderChange($event)"></app-range-slider>
     <app-checkbox-group [disabled]="isLoaderActive" [checkboxesDataInput]="tagsInput"
-      (formEmitter)="selectedTags = $event; resetPaginationProps(); searchGames()">
+      (formEmitter)="onCheckboxGroupChange($event)">
     </app-checkbox-group>
   </div>
 </section>

@@ -1,0 +1,58 @@
+<ng-template #template>
+  <tr class="user-horizontal-card">
+    <td class="user-horizontal-card__name">
+      {{user.username}}
+    </td>
+    <td class="user-horizontal-card__email">
+      {{userEmail ? userEmail : '--'}}
+    </td>
+    <td class="user-horizontal-card__birthday">
+      {{userBirthday ? (userBirthday | date) : '--'}}
+    </td>
+    <td class="user-horizontal-card__status">
+      <div class="user-horizontal-card__status-inner">
+        <ng-container *ngIf="!user?.status">
+          <button class="btn btn--small" (click)="requestFriendship()" [disabled]="isCardDisabled">
+            Add to friends
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="user?.status === friendshipStatus.ACCEPTED">
+          <span class="highlighted  highlighted--success">
+            Accepted
+          </span>
+          <button class="btn btn--small" (click)="deleteFriendship()" [disabled]="isCardDisabled">
+            Delete from friends
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="user?.status === friendshipStatus.PENDING">
+          <button class="btn btn--small" (click)="acceptFriendship()" [disabled]="isCardDisabled">
+            Accept friendship
+          </button>
+          <button class="btn btn--small btn--primary" (click)="rejectFriendship()" [disabled]="isCardDisabled">
+            Reject friendship
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="user?.status === friendshipStatus.APPLIED">
+          <span class="highlighted">
+            Applied
+          </span>
+        </ng-container>
+
+        <ng-container *ngIf="user?.status === friendshipStatus.REJECTED">
+          <span class="highlighted highlighted--error">
+            Rejected
+          </span>
+        </ng-container>
+
+        <ng-container *ngIf="user?.status === friendshipStatus.DELETED">
+          <span class="highlighted highlighted--error">
+            Deleted
+          </span>
+        </ng-container>
+      </div>
+    </td>
+  </tr>
+</ng-template>
