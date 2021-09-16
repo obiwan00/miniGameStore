@@ -16,7 +16,7 @@ export class GamesComponent implements OnInit {
   private gamesService: AbstractGameService
 
   // Req and res fields
-  public params: Partial<GameQueryParams>
+  private queryParams: Partial<GameQueryParams>
   public gamesRes: GamesRes | null = (null)
   public games: Game[] = []
 
@@ -51,8 +51,8 @@ export class GamesComponent implements OnInit {
 
   searchGames() {
     this.isLoaderActive = true;
-    this.setParamsProps()
-    this.gamesService.getGames(this.params).subscribe({
+    this.setQueryParams()
+    this.gamesService.getGames(this.queryParams).subscribe({
       next: (res) => {
         this.gamesRes = res
         console.table({ gamesRes: this.gamesRes })
@@ -63,8 +63,8 @@ export class GamesComponent implements OnInit {
     })
   }
 
-  setParamsProps() {
-    this.params = {
+  setQueryParams() {
+    this.queryParams = {
       offset: this.offset,
       limit: this.gameItemsPerPage,
       search: this.searchValue,
