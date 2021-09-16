@@ -1,6 +1,6 @@
 <section class="container">
   <header class="header">
-    <app-search-bar (formEmitter)="this.searchValue = $event; searchUsers()"
+    <app-search-bar (formEmitter)="onSearchChange($event)"
       [searchDescriptionMessage]="'Search by username'"></app-search-bar>
   </header>
 

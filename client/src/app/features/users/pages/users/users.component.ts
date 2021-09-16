@@ -55,10 +55,21 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  resetPaginationProps() {
+    this.offset = 0
+    this.currentPage = 1
+  }
+
   pageChanged($event: number) {
     this.currentPage = $event
     this.offset = ($event - 1) * this.usersPerPage
 
+    this.searchUsers()
+  }
+
+  onSearchChange($event: string) {
+    this.searchValue = $event
+    this.resetPaginationProps()
     this.searchUsers()
   }
 
