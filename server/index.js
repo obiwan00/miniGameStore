@@ -81,3 +81,9 @@ async function connectToBD() {
   });
   console.log('DB connected');
 }
+
+// kill process on (Ctrl-C)
+process.on('SIGINT', function() {
+  console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+  process.exit(1);
+});

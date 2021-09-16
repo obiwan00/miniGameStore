@@ -1,0 +1,55 @@
+@import "abstracts/variables";
+
+.user-horizontal-card {
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  td {
+    padding: 12px 8px;
+    border-right: 2px solid rgba($color: $black, $alpha: 0.1);
+    border-bottom: 2px solid $black;
+    &:last-child {
+      border-right: 2px solid $black;
+    }
+  }
+
+  // .user-horizontal-card__name
+
+  &__name {
+    width: 15%;
+  }
+
+  // .user-horizontal-card__email
+
+  &__email {
+    width: 30%;
+  }
+
+  // .user-horizontal-card__birthday
+
+  &__birthday {
+    width: 20%;
+  }
+
+  // .user-horizontal-card__status
+
+  &__status {
+    width: 35%;
+  }
+
+  // .user-horizontal-card__status-inner
+
+  &__status-inner {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .btn {
+      padding: 6px 4px;
+    }
+    & > * {
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+    }
+  }
+}
