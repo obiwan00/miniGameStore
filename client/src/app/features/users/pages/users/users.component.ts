@@ -13,12 +13,16 @@ import { AbstractUsersService } from 'src/app/core/services/features/users/users
 export class UsersComponent implements OnInit {
   private usersService: AbstractUsersService
 
-  public usersRes: UsersRes = ({} as UsersRes)
+  private queryParams: Partial<UsersQueryParams>
+
+  public usersRes: UsersRes | null = (null)
 
   public isLoaderActive: boolean = true
   public searchValue: string = ''
 
-  // TODO: ADD: pagination for users res
+  public currentPage = 1
+  public usersPerPage = 5
+  public offset = 0
 
   constructor(
     private route: ActivatedRoute,
@@ -35,14 +39,27 @@ export class UsersComponent implements OnInit {
   searchUsers() {
     this.isLoaderActive = true
 
-    const params: Partial<UsersQueryParams> = {
-      search: this.searchValue,
-    }
+    this.setQueryParams()
 
-    this.usersService.getUsers(params).subscribe((res) => {
+    this.usersService.getUsers(this.queryParams).subscribe((res) => {
       this.usersRes = res
       this.isLoaderActive = false
     })
+  }
+
+  setQueryParams() {
+    this.queryParams = {
+      limit: this.usersPerPage,
+      offset: this.offset,
+      search: this.searchValue,
+    }
+  }
+
+  pageChanged($event: number) {
+    this.currentPage = $event
+    this.offset = ($event - 1) * this.usersPerPage
+
+    this.searchUsers()
   }
 
 }

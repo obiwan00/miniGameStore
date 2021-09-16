@@ -12,10 +12,14 @@
           <user-table-heading></user-table-heading>
         </thead>
         <tbody>
-          <user-table-record *ngFor="let user of usersRes?.users" [user]="user"
-            (reloadRequestEmitter)="searchUsers()"></user-table-record>
+          <user-table-record *ngFor="let user of (usersRes?.users ?? []) | paginate:
+          {itemsPerPage: usersPerPage, totalItems: usersRes?.count ?? 0, currentPage }" [user]="user"
+            (reloadRequestEmitter)="searchUsers()">
+          </user-table-record>
         </tbody>
       </table>
+      <pagination-controls class="users__pagination pagination" (pageChange)="pageChanged($event)" [autoHide]="true">
+      </pagination-controls>
       <div *ngIf="!usersRes?.users?.length">There are not any results 😅</div>
     </div>
   </main>
