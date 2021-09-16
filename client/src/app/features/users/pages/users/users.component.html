@@ -4,12 +4,18 @@
       [searchDescriptionMessage]="'Search by username'"></app-search-bar>
   </header>
 
-  <main class="main">
+  <main class="main users">
     <app-loader *ngIf="isLoaderActive"></app-loader>
-    <div class="main__inner" *ngIf="!isLoaderActive">
-      <app-user-horizontal-card-heading></app-user-horizontal-card-heading>
-      <app-user-horizontal-card *ngFor="let user of usersRes?.users" [user]="user"
-        (reloadRequestEmitter)="searchUsers()"></app-user-horizontal-card>
+    <div class="users__inner" *ngIf="!isLoaderActive">
+      <table class="users__table border">
+        <thead>
+          <user-table-heading></user-table-heading>
+        </thead>
+        <tbody>
+          <user-table-record *ngFor="let user of usersRes?.users" [user]="user"
+            (reloadRequestEmitter)="searchUsers()"></user-table-record>
+        </tbody>
+      </table>
       <div *ngIf="!usersRes?.users?.length">There are not any results 😅</div>
     </div>
   </main>

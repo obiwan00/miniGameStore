@@ -15,9 +15,17 @@
 
 .main {
   flex-grow: 1;
-  // .main__inner
+}
+
+.users {
+  // .users__inner
+
   &__inner {
-    display: grid;
-    gap: 20px;
+  }
+
+  // .users__table
+
+  &__table {
+    width: 100%;
   }
 }
