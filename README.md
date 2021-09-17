@@ -2,7 +2,7 @@
 
 ## Description
 
-The simplified version of Steam website for learning purpose -- https://mini-game-store.herokuapp.com/games.
+The simplified version of Steam website for learning purpose -- https://mini-game-store.herokuapp.com.
 
 User can register and login to the website. Also, user can find other users and may request friendship with them. The main page is a games store. There user can search games by name, price and tags to add some game to own library of games.
 
